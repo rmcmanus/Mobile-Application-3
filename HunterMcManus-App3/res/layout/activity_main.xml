@@ -44,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:text="@string/login" />
+            android:text="@string/login" 
+            android:onClick="login"/>
     </LinearLayout>
 
     <LinearLayout
@@ -58,7 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:text="@string/guest" />
+            android:text="@string/guest" 
+            android:onClick="guest"/>
     </LinearLayout>
     
     <LinearLayout
@@ -109,7 +111,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/signup" />
+            android:text="@string/signup" 
+            android:onClick="signup"/>
     </LinearLayout>
 
 </LinearLayout>

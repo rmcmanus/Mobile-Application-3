@@ -12,5 +12,9 @@
     <string name="firstname">First Name</string>
     <string name="lastname">Last Name</string>
     <string name="email">Email</string>
+    <string name="title_activity_semester">SemesterActivity</string>
+    <string name="title_activity_course">CourseActivity</string>
+    <string name="title_activity_assignment">AssignmentActivity</string>
+    <string name="title_activity_show_assignment">ShowAssignmentActivity</string>
 
 </resources>
