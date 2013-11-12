@@ -1,6 +1,8 @@
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.app.Activity;
 public class AddAssignmentActivity extends Activity {
 
@@ -8,6 +10,15 @@ public class AddAssignmentActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_assignment);
+		Spinner prioritySpinner = (Spinner) findViewById(R.id.assignmentPrioritySpinner);
+		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.priorityArray, android.R.layout.simple_spinner_dropdown_item);
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		prioritySpinner.setAdapter(arrayAdapter);
+		
+		Spinner typeSpinner = (Spinner) findViewById(R.id.assignmentTypeSpinner);
+		ArrayAdapter<CharSequence> arrayAdapter1 = ArrayAdapter.createFromResource(this, R.array.testTypesArray, android.R.layout.simple_spinner_dropdown_item);
+		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		typeSpinner.setAdapter(arrayAdapter1);
 		// Show the Up button in the action bar.
 //		setupActionBar();
 	}

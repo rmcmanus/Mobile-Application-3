@@ -23,19 +23,14 @@ public class SemesterActivity extends Activity {
 		setContentView(R.layout.activity_semester);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		String[] semesters = new String[2];
-		semesters[0] = "Semester 1";
-		semesters[1] = "Semester 2";
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,semesters);
+
+		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.testSemesters, android.R.layout.simple_list_item_1);
 		ListView semesterList = (ListView) findViewById(R.id.semesterlist);
 		semesterList.setAdapter(arrayAdapter);
 		intent = new Intent(this, CourseActivity.class);
 		semesterList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//				songName = namesList[position];
-//				Song song = new Song(songName);
-//				chooseDifficulty(v);
 				pickCourse();
 			}
 		});
