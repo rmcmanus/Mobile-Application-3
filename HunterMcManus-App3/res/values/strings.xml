@@ -32,5 +32,22 @@
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="submit">Submit</string>
+    <string name="addsemesterlabel">Add A Semester</string>
+    <string name="fall">Fall</string>
+    <string name="spring">Spring</string>
+    <string name="summer">Summer</string>
+    <string name="winter">Winter</string>
+    <string name="other">Other</string>
+    <string name="year">Year</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="assignmentcategory">Category (eg. Projects)</string>
+    <string name="weight">Weight</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_warning">Warning</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="warningmessage">If you don\'t sign in your data will be lost if you uninstall the app.  Are you sure you want to continue?</string>
+    <string name="warning">Warning!</string>
 
 </resources>
