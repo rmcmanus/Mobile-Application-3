@@ -17,7 +17,7 @@ public class AddAssignmentActivity extends Activity {
 		
 		Spinner typeSpinner = (Spinner) findViewById(R.id.assignmentTypeSpinner);
 		ArrayAdapter<CharSequence> arrayAdapter1 = ArrayAdapter.createFromResource(this, R.array.testTypesArray, android.R.layout.simple_spinner_dropdown_item);
-		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		typeSpinner.setAdapter(arrayAdapter1);
 		// Show the Up button in the action bar.
 //		setupActionBar();

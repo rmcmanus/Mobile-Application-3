@@ -67,6 +67,16 @@
     </string-array>
     <string name="confirmPassword">Confirm Password</string>
     <string name="nonmatchingpasswords">Your passwords don\'t match. Please try again</string>
-    <string name="invaidemail">The email you entered is invalid format</string>
+    <string name="invaidemail">The email you entered is in an invalid format</string>
+    <string name="schoollabel">School Name:</string>
+    <string name="semestertypelabel">How are your semesters broken down?</string>
+    <string-array name="termsArray">
+        <item >Semesters</item>
+        <item >Quarters</item>
+        <item >Trimesters</item>
+    </string-array>
+    <string name="invalidlogin">You entered an invalid username or password, please try again</string>
+    <string name="addmore">Add More</string>
+    <string name="allrequiredfields">You did not fill out all of the required fields</string>
 
 </resources>

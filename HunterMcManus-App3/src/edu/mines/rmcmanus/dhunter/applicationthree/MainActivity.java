@@ -3,6 +3,7 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -64,6 +65,12 @@ public class MainActivity extends FragmentActivity {
 					startSemesterIntent();
 				} else {
 					Log.d("Parse Error", e.toString());
+					Log.d("Parse Error", "" + e.getCode());
+					if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+						TextView invalid = (TextView) findViewById(R.id.errorlabel);
+						invalid.setTextColor(Color.RED);
+						invalid.setText(getString(R.string.invalidlogin));
+					}
 				}
 			}
 		});
@@ -85,6 +92,14 @@ public class MainActivity extends FragmentActivity {
 		String userPassword = password.getText().toString();
 		String confirm= confirmPassword.getText().toString();
 		String userEmail = email.getText().toString();
+		
+		if (firstName.equals("") || lastName.equals("") || userPassword.equals("") || 
+				confirm.equals("") || userEmail.equals("")) {
+			TextView invalid = (TextView) findViewById(R.id.errorlabel);
+			invalid.setTextColor(Color.RED);
+			invalid.setText(getString(R.string.allrequiredfields));
+			return;
+		}
 
 		if (userPassword.equals(confirm)) {
 			ParseUser newUser = new ParseUser();
@@ -104,6 +119,7 @@ public class MainActivity extends FragmentActivity {
 						Log.d("Parse Error", e.toString());
 						if (e.getCode() == ParseException.INVALID_EMAIL_ADDRESS) {
 							TextView invalid = (TextView) findViewById(R.id.errorlabel);
+							invalid.setTextColor(Color.RED);
 							invalid.setText(getString(R.string.invaidemail));
 						}
 					}
@@ -111,6 +127,7 @@ public class MainActivity extends FragmentActivity {
 			});
 		} else {
 			TextView invalid = (TextView) findViewById(R.id.errorlabel);
+			invalid.setTextColor(Color.RED);
 			invalid.setText(getString(R.string.nonmatchingpasswords));
 		}
 

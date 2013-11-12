@@ -163,63 +163,13 @@
             android:layout_gravity="center"
             android:orientation="horizontal" >
 
-            <EditText
+            <Button
                 android:id="@+id/assignmentCategory4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:hint="@string/assignmentcategory" />
-
-            <EditText
-                android:id="@+id/assignmentWeight4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/weight" />
+                android:text="@string/addmore" />
         </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/assignmentCategory5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/assignmentcategory" />
-
-            <EditText
-                android:id="@+id/assignmentWeight5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/weight" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/assignmentCategory6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/assignmentcategory" />
-
-            <EditText
-                android:id="@+id/assignmentWeight6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/weight" />
-        </LinearLayout>
-
         
     </LinearLayout>
 
