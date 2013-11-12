@@ -49,5 +49,6 @@
     <string name="no">No</string>
     <string name="warningmessage">If you don\'t sign in your data will be lost if you uninstall the app.  Are you sure you want to continue?</string>
     <string name="warning">Warning!</string>
+    <string name="action_user">Logout</string>
 
 </resources>

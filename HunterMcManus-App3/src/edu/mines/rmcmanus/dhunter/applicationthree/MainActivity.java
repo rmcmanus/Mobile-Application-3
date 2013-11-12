@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
@@ -34,13 +36,36 @@ public class MainActivity extends FragmentActivity {
 		// Application ID: aB0qJXP4e7xyBoZwTe4GrkNsgxgxXcCRUpZC091C
 		// Client ID: f5g9Z9taJ3KPklhO6iRMOKxj8zVyINwYYJLrXkaS
 		Parse.initialize(this, "aB0qJXP4e7xyBoZwTe4GrkNsgxgxXcCRUpZC091C", "f5g9Z9taJ3KPklhO6iRMOKxj8zVyINwYYJLrXkaS");
-
 		ParseAnalytics.trackAppOpened(getIntent());
+		
+		// Check to see if a user is currently logged in
+		// If true, moves directly to the semester activity
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null) {
+			startSemesterIntent();
+		}
+		
+		// Creates an automatic user in Parse if not logged in. Once logged in, data is saved
+		// to that new or existing user
+		ParseUser.enableAutomaticUser();
+		ParseUser.getCurrentUser().increment("RunCount");
+		ParseUser.getCurrentUser().saveInBackground();
 	}
 
 	public void login(View v) {
-		Intent intent = new Intent(this, SemesterActivity.class);
-		startActivity(intent);
+		String firstName = first.getText().toString();
+		String lastName = last.getText().toString();
+		String userPassword = password.getText().toString();
+		
+		ParseUser.logInInBackground(firstName + " " + lastName, userPassword, new LogInCallback() {
+			  public void done(ParseUser user, ParseException e) {
+			    if (user != null) {
+			    	startSemesterIntent();
+			    } else {
+			    	Log.d("Parse Error", e.toString());
+			    }
+			  }
+			});
 	}
 
 	public void guest(View v) {
@@ -62,7 +87,7 @@ public class MainActivity extends FragmentActivity {
 		newUser.signUpInBackground(new SignUpCallback() {
 			public void done(ParseException e) {
 				if (e == null) {
-					Log.d("Parse Message", "Let's start an intent!");
+					//Log.d("Parse Message", "Let's start an intent!");
 					startSemesterIntent();
 				} else {
 					Log.d("Parse Error", e.toString());
@@ -89,6 +114,7 @@ public class MainActivity extends FragmentActivity {
 	public void startSemesterIntent() {
 		intent = new Intent(this, SemesterActivity.class);
 		startActivity(intent);
+		finish();
 	}
 
 }
