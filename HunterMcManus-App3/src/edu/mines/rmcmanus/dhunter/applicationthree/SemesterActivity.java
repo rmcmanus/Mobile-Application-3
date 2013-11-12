@@ -75,8 +75,24 @@ public class SemesterActivity extends Activity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.addSemesterContext:
+			Intent intent = new Intent(this, AddSemesterActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.setting:
+			Intent setting = new Intent(this, SettingActivity.class);
+			startActivity(setting);
+			return true;
+		case R.id.about:
+			Intent about = new Intent(this, AboutActivity.class);
+			startActivity(about);
+			return true;
+		case R.id.help:
+			Intent help = new Intent(this, HelpActivity.class);
+			startActivity(help);
+			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
-
 }

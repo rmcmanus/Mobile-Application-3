@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <application
@@ -53,11 +53,49 @@
         <activity
             android:name="edu.mines.rmcmanus.dhunter.applicationthree.ShowAssignmentActivity"
             android:label="@string/title_activity_show_assignment"
-            android:screenOrientation="landscape"
-            android:parentActivityName="edu.mines.rmcmanus.dhunter.applicationthree.AssignmentActivity" >
+            android:parentActivityName="edu.mines.rmcmanus.dhunter.applicationthree.AssignmentActivity"
+            android:screenOrientation="landscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.mines.rmcmanus.dhunter.applicationthree.AssignmentActivity" />
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.AddSemesterActivity"
+            android:label="@string/title_activity_add_semester"
+            android:parentActivityName="edu.mines.rmcmanus.dhunter.applicationthree.SemesterActivity"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.mines.rmcmanus.dhunter.applicationthree.SemesterActivity" />
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.AddCourseActivity"
+            android:label="@string/title_activity_add_course"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.AddAssignmentActivity"
+            android:label="@string/title_activity_add_assignment"
+            android:parentActivityName="edu.mines.rmcmanus.dhunter.applicationthree.AssignmentActivity"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.mines.rmcmanus.dhunter.applicationthree.AssignmentActivity" />
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.HelpActivity"
+            android:label="@string/title_activity_help"
+            android:screenOrientation="landscape" >
         </activity>
     </application>
 

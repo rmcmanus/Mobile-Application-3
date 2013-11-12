@@ -16,5 +16,21 @@
     <string name="title_activity_course">CourseActivity</string>
     <string name="title_activity_assignment">AssignmentActivity</string>
     <string name="title_activity_show_assignment">ShowAssignmentActivity</string>
+    <string name="name">Name:</string>
+    <string name="type">Type:</string>
+    <string name="priority">Priority</string>
+    <string name="pointvalue">Point Value:</string>
+    <string name="duedate">Due Date:</string>
+    <string name="menu_add">Add</string>
+    <string name="title_activity_add_semester">AddSemesterActivity</string>
+    <string name="title_activity_add_course">AddCourseActivity</string>
+    <string name="title_activity_add_assignment">AddAssignmentActivity</string>
+    <string name="setting">Settings</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="submit">Submit</string>
 
 </resources>
