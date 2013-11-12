@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -20,7 +21,7 @@ public class MainActivity extends FragmentActivity {
 
 	Intent intent;
 	EditText first, last, email, password;
-	EditText loginUsername, loginPassword;
+	EditText loginUsername, loginPassword, confirmPassword;
 	boolean proceed = false;
 
 	@Override
@@ -32,7 +33,8 @@ public class MainActivity extends FragmentActivity {
 		last = (EditText) findViewById(R.id.lastname);
 		email = (EditText) findViewById(R.id.email);
 		password = (EditText) findViewById(R.id.passwordSignUp);
-		
+		confirmPassword = (EditText) findViewById(R.id.confirmPasswordSignUp);
+
 		loginUsername = (EditText) findViewById(R.id.username);
 		loginPassword = (EditText) findViewById(R.id.password);
 
@@ -53,6 +55,8 @@ public class MainActivity extends FragmentActivity {
 	public void login(View v) {
 		String username = loginUsername.getText().toString();
 		String password = loginPassword.getText().toString();
+		Log.d("Parse Error", username);
+		Log.d("Parse Error", password);
 
 		ParseUser.logInInBackground(username, password, new LogInCallback() {
 			public void done(ParseUser user, ParseException e) {
@@ -79,24 +83,37 @@ public class MainActivity extends FragmentActivity {
 		String firstName = first.getText().toString();
 		String lastName = last.getText().toString();
 		String userPassword = password.getText().toString();
+		String confirm= confirmPassword.getText().toString();
 		String userEmail = email.getText().toString();
 
-		ParseUser newUser = new ParseUser();
+		if (userPassword.equals(confirm)) {
+			ParseUser newUser = new ParseUser();
 
-		newUser.setUsername(firstName + " " + lastName);
-		newUser.setPassword(userPassword);
-		newUser.setEmail(userEmail);
+			newUser.setUsername(userEmail);
+			newUser.put("first", firstName);
+			newUser.put("last", lastName);
+			newUser.setPassword(userPassword);
+			newUser.setEmail(userEmail);
 
-		newUser.signUpInBackground(new SignUpCallback() {
-			public void done(ParseException e) {
-				if (e == null) {
-					//Log.d("Parse Message", "Let's start an intent!");
-					startSemesterIntent();
-				} else {
-					Log.d("Parse Error", e.toString());
+			newUser.signUpInBackground(new SignUpCallback() {
+				public void done(ParseException e) {
+					if (e == null) {
+						//Log.d("Parse Message", "Let's start an intent!");
+						startSemesterIntent();
+					} else {
+						Log.d("Parse Error", e.toString());
+						if (e.getCode() == ParseException.INVALID_EMAIL_ADDRESS) {
+							TextView invalid = (TextView) findViewById(R.id.errorlabel);
+							invalid.setText(getString(R.string.invaidemail));
+						}
+					}
 				}
-			}
-		});
+			});
+		} else {
+			TextView invalid = (TextView) findViewById(R.id.errorlabel);
+			invalid.setText(getString(R.string.nonmatchingpasswords));
+		}
+
 	}
 
 	private void showWarningDialog() {

@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="@string/username" />
+            android:hint="@string/email" />
 
         <EditText
             android:id="@+id/password"
@@ -105,6 +105,14 @@
             android:layout_gravity="center"
             android:inputType="textPassword"
             android:hint="@string/password" />
+        
+        <EditText
+            android:id="@+id/confirmPasswordSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:inputType="textPassword"
+            android:hint="@string/confirmPassword" />
 
         <Button
             android:id="@+id/signupbutton"
@@ -113,6 +121,13 @@
             android:layout_gravity="center"
             android:text="@string/signup" 
             android:onClick="signup"/>
+        
+        <TextView
+            android:id="@+id/errorlabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="" />
     </LinearLayout>
 
 </LinearLayout>

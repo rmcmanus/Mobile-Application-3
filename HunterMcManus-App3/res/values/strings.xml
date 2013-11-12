@@ -65,5 +65,8 @@
         <item >Spring 2013</item>
         <item >Fall 2012</item>
     </string-array>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="nonmatchingpasswords">Your passwords don\'t match. Please try again</string>
+    <string name="invaidemail">The email you entered is invalid format</string>
 
 </resources>
