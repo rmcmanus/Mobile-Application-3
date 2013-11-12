@@ -51,18 +51,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="@string/addsemesterlabel" />
+        android:hint="@string/other" />
     
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="@string/other" />
+        android:hint="@string/year" />
     
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="@string/year" />
+        android:hint="@string/submit" />
 
 </LinearLayout>
