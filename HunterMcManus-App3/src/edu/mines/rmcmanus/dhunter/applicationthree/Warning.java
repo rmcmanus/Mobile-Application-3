@@ -1,8 +1,8 @@
 /**
-* Description:  This class defines a custom dialog that will be shown when a user
- * presses the add button on the team selection screen.  This dialog has a listener
- * for if the user presses the submit button, and if it does, then it passes information
- * to the activity.
+ * Description:  This class defines a custom dialog that will be shown when a user
+ * presses the guest button on the main screen.  This dialog has a listener
+ * for if the user presses the yes or no button.  If the yes button is pressed then
+ * proceed with the intent, otherwise dismiss the dialog.
  * 
  * @author Ryan McManus, David Hunter
  */
@@ -43,8 +43,8 @@ android.view.View.OnClickListener {
 
 	/**
 	 * The is the listener for the button on the dialog box.  If the button is pressed
-	 * then it will set a team name, and set the boolean to check if a name has been
-	 * set to true.  The dialog will then be dismissed.
+	 * then it will set a flag that the user wants to proceed.  
+	 * The dialog will then be dismissed.
 	 * 
 	 */
 	@Override

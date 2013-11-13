@@ -1,3 +1,11 @@
+/**
+ * Description: This activity is used to add a new Course to a semester.  The functionality
+ * for this submission has not yet been implemented.  In the next submission the course
+ * will be inserted into the database.
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;
@@ -10,12 +18,5 @@ public class AddCourseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_course);
 	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.add_course, menu);
-//		return true;
-//	}
 
 }

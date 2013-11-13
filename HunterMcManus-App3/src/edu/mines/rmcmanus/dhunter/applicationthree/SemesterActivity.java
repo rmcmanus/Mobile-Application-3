@@ -1,3 +1,12 @@
+/**
+ * Description: This activity is used to show all of the saved semester relating
+ * to the current user. The functionality for this submission has not 
+ * yet been implemented. The list is filled with dummy data.  For the final submission
+ * the data will be pulled from the database
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.annotation.TargetApi;
@@ -6,7 +15,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +27,7 @@ import com.parse.ParseUser;
 
 public class SemesterActivity extends Activity {
 	public Intent intent;
+	public boolean isGuest;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +35,11 @@ public class SemesterActivity extends Activity {
 		setContentView(R.layout.activity_semester);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		//Gets weather the user signed in as a guest or not
+		isGuest = getIntent().getBooleanExtra(MainActivity.EXTRA_GUEST, false);
 
+		//Fills the list with dummy data		
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.testSemesters, android.R.layout.simple_list_item_1);
 		ListView semesterList = (ListView) findViewById(R.id.semesterlist);
 		semesterList.setAdapter(arrayAdapter);
@@ -40,6 +53,10 @@ public class SemesterActivity extends Activity {
 		});
 	}
 	
+	/**
+	 * This function starts the next activity based on which semester was clicked on in 
+	 * the list
+	 */
 	public void pickCourse() {
 		startActivity(intent);
 	}
@@ -57,10 +74,16 @@ public class SemesterActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.semester, menu);
+		//If the user is a guest don't show the logout button
+		if (!isGuest) {
+			getMenuInflater().inflate(R.menu.semester, menu);
+		} else {
+			getMenuInflater().inflate(R.menu.semester_nosignout, menu);
+		}
 		return true;
 	}
 
+	//Does actions based on which item was clicked in the context menu
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -91,12 +114,14 @@ public class SemesterActivity extends Activity {
 			startActivity(help);
 			return true;
 		case R.id.action_user:
-			ParseUser.logOut();
-			ParseUser currentUser = ParseUser.getCurrentUser();
-			
-			Intent login = new Intent(this, MainActivity.class);
-			startActivity(login);
-			finish();
+			if (!isGuest) {
+				ParseUser.logOut();
+				Intent login = new Intent(this, MainActivity.class);
+				startActivity(login);
+				finish();
+			}
+//			ParseUser currentUser = ParseUser.getCurrentUser();
+						
 			return true;
 		}
 		

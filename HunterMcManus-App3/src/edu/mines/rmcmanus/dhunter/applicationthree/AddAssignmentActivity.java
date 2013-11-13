@@ -1,3 +1,11 @@
+/**
+ * Description: This activity is used to add a new Assignment to a course.  The functionality
+ * for this submission has not yet been implemented.  In the next submission the assignment
+ * will be inserted into the database.
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;
@@ -10,51 +18,17 @@ public class AddAssignmentActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_assignment);
+		//Populate the spinner with priorities high, medium, low
 		Spinner prioritySpinner = (Spinner) findViewById(R.id.assignmentPrioritySpinner);
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.priorityArray, android.R.layout.simple_spinner_dropdown_item);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		prioritySpinner.setAdapter(arrayAdapter);
 		
+		//Populate the spinner with assignment types.  For the final submission it will
+		//be populated based on information stored about the course in the database
 		Spinner typeSpinner = (Spinner) findViewById(R.id.assignmentTypeSpinner);
 		ArrayAdapter<CharSequence> arrayAdapter1 = ArrayAdapter.createFromResource(this, R.array.testTypesArray, android.R.layout.simple_spinner_dropdown_item);
 		arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		typeSpinner.setAdapter(arrayAdapter1);
-		// Show the Up button in the action bar.
-//		setupActionBar();
 	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-//	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//	private void setupActionBar() {
-//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-//			getActionBar().setDisplayHomeAsUpEnabled(true);
-//		}
-//	}
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.add_assignment, menu);
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case android.R.id.home:
-//			// This ID represents the Home or Up button. In the case of this
-//			// activity, the Up button is shown. Use NavUtils to allow users
-//			// to navigate up one level in the application structure. For
-//			// more details, see the Navigation pattern on Android Design:
-//			//
-//			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-//			//
-//			NavUtils.navigateUpFromSameTask(this);
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 }

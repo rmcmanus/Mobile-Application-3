@@ -1,3 +1,12 @@
+/**
+ * Description: This activity is used to set up settings for the application. 
+ * The user can set school name and what type of terms scheme they are on.  The
+ * functionality has not yet been implemented. This information will be inserted in
+ * the database
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;

@@ -1,3 +1,12 @@
+/**
+ * Description: This activity is used to show all of the saved assignments relating
+ * to the current users selected course. The functionality for this submission has not 
+ * yet been implemented. The list is filled with dummy data.  This is the activity on
+ * a hand held
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.content.Intent;
@@ -52,6 +61,7 @@ public class CourseDetailActivity extends FragmentActivity {
 		return true;
 	}
 
+	//This function does an action depending on what was selected in the context menu 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

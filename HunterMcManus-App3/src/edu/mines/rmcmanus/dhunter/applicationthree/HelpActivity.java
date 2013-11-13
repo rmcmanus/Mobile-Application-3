@@ -1,3 +1,11 @@
+/**
+ * Description: This activity is used to some steps to take to get started with our
+ * application.  This screen right now is just a picture with steps on it. This may
+ * be improved upon depending on if we can think of a nicer way to do it.
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;

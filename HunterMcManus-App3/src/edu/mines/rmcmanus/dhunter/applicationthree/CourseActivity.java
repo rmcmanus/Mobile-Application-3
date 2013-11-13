@@ -1,3 +1,12 @@
+/**
+ * Description: This activity is used to show all of the saved courses relating
+ * to the current users selected semester. The functionality for this submission has not 
+ * yet been implemented. The list is filled with dummy data.  In the next submission the 
+ * assignment will be inserted into the database.
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;
@@ -24,6 +33,7 @@ public class CourseActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		//Fills the list with dummy data
 		String[] courses = new String[2];
 		courses[0] = "Course 1";
 		courses[1] = "Course 2";
@@ -34,14 +44,14 @@ public class CourseActivity extends Activity {
 		courseList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//				songName = namesList[position];
-//				Song song = new Song(songName);
-//				chooseDifficulty(v);
 				pickAssignment();
 			}
 		});
 	}
 	
+	/**
+	 * This function starts the activity to list all Assignments
+	 */
 	public void pickAssignment() {
 		startActivity(intent);
 	}
@@ -63,6 +73,7 @@ public class CourseActivity extends Activity {
 		return true;
 	}
 
+	//This function does an action depending on what was selected in the context menu
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

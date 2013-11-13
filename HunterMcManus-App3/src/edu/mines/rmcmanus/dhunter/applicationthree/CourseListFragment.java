@@ -1,3 +1,12 @@
+/**
+ * Description: This activity is used to show all of the saved courses relating
+ * to the current users selected semester. The functionality for this submission has not 
+ * yet been implemented. The list is filled with dummy data.  This is the left fragment on
+ * a tablet
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.app.Activity;

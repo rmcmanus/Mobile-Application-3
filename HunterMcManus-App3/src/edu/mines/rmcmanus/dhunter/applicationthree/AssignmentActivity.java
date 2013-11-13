@@ -1,3 +1,12 @@
+/**
+ * Description: This activity is used to show all of the saved assignments relating
+ * to the current users selected course. The functionality for this submission has not 
+ * yet been implemented. The list is filled with dummy data.  In the next submission the 
+ * assignment will be inserted into the database.
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.os.Bundle;
@@ -25,6 +34,7 @@ public class AssignmentActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		//Fills the list with dummy data
 		String[] assignments = new String[2];
 		assignments[0] = "Assignment 1";
 		assignments[1] = "Assignment 2";
@@ -35,14 +45,14 @@ public class AssignmentActivity extends Activity {
 		assignmentList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//				songName = namesList[position];
-//				Song song = new Song(songName);
-//				chooseDifficulty(v);
 				showAssignment();
 			}
 		});
 	}
 	
+	/**
+	 * This function starts the activity to show details about the selected assignment
+	 */
 	public void showAssignment() {
 		startActivity(intent);
 	}
@@ -64,6 +74,7 @@ public class AssignmentActivity extends Activity {
 		return true;
 	}
 
+	//Does an action based on the item selected in the Context menu
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

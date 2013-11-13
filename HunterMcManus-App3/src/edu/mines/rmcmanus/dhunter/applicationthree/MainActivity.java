@@ -1,3 +1,20 @@
+// This application was tested on a Nexus 4 and Nexus 7
+// This application was tested on API 18 max and API 11 min
+// Our application was designed to run in landscape mode only
+/**
+ * Description: This class is used to either sign up for our application, or to login to our 
+ * application using the Parse API.
+ *
+ * Point Distribution: We agree on a 50/50 point distribution
+ *
+ * Documentation Statement: We here by solemnly swear that we did not cheat.  We used StackOverflow
+ * for small examples of how code segments should be implemented (ie. ArrayAdapters for arrays in xml) 
+ * and the code from class on how to implement fragments, adapted for our needs. (Author Randy Bower).
+ * Fragments were generated using Eclipse built in Activity generator.
+ *
+ * @author Ryan McManus, David Hunter
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import android.content.DialogInterface;
@@ -24,6 +41,8 @@ public class MainActivity extends FragmentActivity {
 	EditText first, last, email, password;
 	EditText loginUsername, loginPassword, confirmPassword;
 	boolean proceed = false;
+	public final static String EXTRA_GUEST = "edu.mines.rmcmanus.dhunter.app3.GUEST";
+	public boolean isGuest = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +58,7 @@ public class MainActivity extends FragmentActivity {
 		loginUsername = (EditText) findViewById(R.id.username);
 		loginPassword = (EditText) findViewById(R.id.password);
 
+		// Syncs our app up with the Parse API using an application ID and client id
 		// Initialize our app to access specific folders on Parse.com
 		// Application ID: aB0qJXP4e7xyBoZwTe4GrkNsgxgxXcCRUpZC091C
 		// Client ID: f5g9Z9taJ3KPklhO6iRMOKxj8zVyINwYYJLrXkaS
@@ -53,12 +73,20 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * This function is called when the user presses the login button.  This function checks
+	 * that the user put in valid login information that is in the Parse database.  If the
+	 * login is successful then the next activity starts, otherwise an error is shown.
+	 * 
+	 * @param v The login button that is pressed
+	 */
 	public void login(View v) {
 		String username = loginUsername.getText().toString();
 		String password = loginPassword.getText().toString();
 		Log.d("Parse Error", username);
 		Log.d("Parse Error", password);
-
+		
+		//A parse API call to check if the user exists in the database and try to log them in
 		ParseUser.logInInBackground(username, password, new LogInCallback() {
 			public void done(ParseUser user, ParseException e) {
 				if (user != null) {
@@ -76,16 +104,30 @@ public class MainActivity extends FragmentActivity {
 		});
 	}
 
+	/**
+	 * This function gets called when the user presses the Guest button.  The function
+	 * generates an automatic user name so that if the user decides they want to sign up
+	 * for the application at a later time, the information is easily transferable.
+	 * 
+	 * @param v The Guest button that was pressed
+	 */
 	public void guest(View v) {
 		// Creates an automatic user in Parse if not logged in. Once logged in, data is saved
 		// to that new or existing user
 		ParseUser.enableAutomaticUser();
 		ParseUser.getCurrentUser().increment("RunCount");
 		ParseUser.getCurrentUser().saveInBackground();
-
 		showWarningDialog();
 	}
 
+	/**
+	 * This function is called when the user presses the sign-up button on the main screen.
+	 * The function checks to see that there isn't already a user with the same email
+	 * address in the database, and if there is then the user is added.  The function also
+	 * checks to make sure that all the necessary edit boxes are filled out.
+	 * 
+	 * @param v The Signup button that was pressed
+	 */
 	public void signup(View v) {
 		String firstName = first.getText().toString();
 		String lastName = last.getText().toString();
@@ -102,6 +144,7 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		if (userPassword.equals(confirm)) {
+			//Creates a new Parse user if the above criteria is met
 			ParseUser newUser = new ParseUser();
 
 			newUser.setUsername(userEmail);
@@ -110,6 +153,7 @@ public class MainActivity extends FragmentActivity {
 			newUser.setPassword(userPassword);
 			newUser.setEmail(userEmail);
 
+			//Calls a Parse API function to signup the user in the database
 			newUser.signUpInBackground(new SignUpCallback() {
 				public void done(ParseException e) {
 					if (e == null) {
@@ -117,10 +161,16 @@ public class MainActivity extends FragmentActivity {
 						startSemesterIntent();
 					} else {
 						Log.d("Parse Error", e.toString());
+						Log.d("Parse Error", ""+e.getCode());
 						if (e.getCode() == ParseException.INVALID_EMAIL_ADDRESS) {
 							TextView invalid = (TextView) findViewById(R.id.errorlabel);
 							invalid.setTextColor(Color.RED);
 							invalid.setText(getString(R.string.invaidemail));
+						}
+						if (e.getCode() == ParseException.EMAIL_TAKEN || e.getCode() == ParseException.USERNAME_TAKEN) {
+							TextView invalid = (TextView) findViewById(R.id.errorlabel);
+							invalid.setTextColor(Color.RED);
+							invalid.setText(getString(R.string.duplicateemail));
 						}
 					}
 				}
@@ -133,6 +183,11 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
+	/**
+	 * This function is called when the user clicks on the Guest button.  This warning
+	 * is shown to tell the user that there information won't be saved if they delete
+	 * the application 
+	 */
 	private void showWarningDialog() {
 		final Warning warningDialog = new Warning(this);
 		warningDialog.show();
@@ -141,15 +196,21 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				if (warningDialog.proceed) {
+					isGuest = true;
 					startSemesterIntent();
 				}
 			}
 
 		});
 	}
-
+	
+	/**
+	 * This function is called when the user has finished either logging in or signing up
+	 * successfully.  This function starts the next intent.
+	 */
 	public void startSemesterIntent() {
 		intent = new Intent(this, SemesterActivity.class);
+		intent.putExtra(EXTRA_GUEST, isGuest);
 		startActivity(intent);
 		finish();
 	}
