@@ -84,5 +84,10 @@
     <string name="allrequiredfields">You did not fill out all of the required fields</string>
     <string name="title_course_list">Courses</string>
     <string name="title_course_detail">Course Detail</string>
+    <string name="testassignment">Assignment 1</string>
+    <string name="testPriority">High</string>
+    <string name="testType">Project</string>
+    <string name="testPointValue">100</string>
+    <string name="testDueDate">10/17/2013</string>
 
 </resources>

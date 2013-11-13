@@ -2,6 +2,7 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * A fragment representing a single Course detail screen. This fragment is
  * either contained in a {@link CourseListActivity} in two-pane mode (on
- * tablets) or a {@link CourseDetailActivity} on handsets.
+ * tablets) or a {@link CourseDetailActivity} on hand sets.
  */
 public class CourseDetailFragment extends Fragment {
 	
@@ -57,11 +57,17 @@ public class CourseDetailFragment extends Fragment {
 
 		      @Override
 		      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-		    	  Toast.makeText(getActivity(), "This functionality is not available yet", Toast.LENGTH_SHORT).show();
+//		    	  Toast.makeText(getActivity(), "This functionality is not available yet", Toast.LENGTH_SHORT).show();
+		    	 showAssignment();
 		      }
 
 		});
 
 		return rootView;
+	}
+	
+	public void showAssignment() {
+		 Intent intent = new Intent(getActivity(), ShowAssignmentActivity.class);
+		 startActivity(intent);
 	}
 }

@@ -42,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:layout_gravity="right"
-                android:text="" />
+                android:gravity="right"
+                android:text="@string/testassignment" />
         </LinearLayout>
         
         <LinearLayout
@@ -63,7 +64,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:layout_gravity="right"
-                android:text="" />
+                android:gravity="right"
+                android:text="@string/testType" />
         </LinearLayout>
         
         <LinearLayout
@@ -84,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:layout_gravity="right"
-                android:text="" />
+                android:gravity="right"
+                android:text="@string/testPriority" />
         </LinearLayout>
         
         <LinearLayout
@@ -104,8 +107,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
+                android:gravity="right"
                 android:layout_gravity="right"
-                android:text="" />
+                android:text="@string/testPointValue" />
         </LinearLayout>
         
         <LinearLayout
@@ -126,7 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:layout_gravity="right"
-                android:text="" />
+                android:gravity="right"
+                android:text="@string/testDueDate" />
         </LinearLayout>
 
         <Button

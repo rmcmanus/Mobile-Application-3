@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 
 /**
@@ -43,6 +44,13 @@ public class CourseDetailActivity extends FragmentActivity {
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.assignment, menu);
+		return true;
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -57,6 +65,22 @@ public class CourseDetailActivity extends FragmentActivity {
 			//
 			NavUtils.navigateUpTo(this, new Intent(this,
 					CourseListActivity.class));
+			return true;
+		case R.id.addAssignmentContext:
+			Intent intent = new Intent(this, AddAssignmentActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.setting:
+			Intent setting = new Intent(this, SettingActivity.class);
+			startActivity(setting);
+			return true;
+		case R.id.about:
+			Intent about = new Intent(this, AboutActivity.class);
+			startActivity(about);
+			return true;
+		case R.id.help:
+			Intent help = new Intent(this, HelpActivity.class);
+			startActivity(help);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
