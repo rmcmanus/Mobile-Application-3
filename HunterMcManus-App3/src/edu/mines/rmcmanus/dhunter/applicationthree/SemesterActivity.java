@@ -30,7 +30,8 @@ public class SemesterActivity extends Activity {
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.testSemesters, android.R.layout.simple_list_item_1);
 		ListView semesterList = (ListView) findViewById(R.id.semesterlist);
 		semesterList.setAdapter(arrayAdapter);
-		intent = new Intent(this, CourseActivity.class);
+		//intent = new Intent(this, CourseActivity.class);
+		intent = new Intent(this, CourseListActivity.class);
 		semesterList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

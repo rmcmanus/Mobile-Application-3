@@ -104,6 +104,18 @@
             android:name="edu.mines.rmcmanus.dhunter.applicationthree.Warning"
             android:label="@string/title_activity_warning" >
         </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.CourseListActivity"
+            android:label="@string/title_course_list" >
+        </activity>
+        <activity
+            android:name="edu.mines.rmcmanus.dhunter.applicationthree.CourseDetailActivity"
+            android:label="@string/title_course_detail"
+            android:parentActivityName=".CourseListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CourseListActivity" />
+        </activity>
     </application>
 
 </manifest>
