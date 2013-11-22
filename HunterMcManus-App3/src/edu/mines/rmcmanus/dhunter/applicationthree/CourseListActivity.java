@@ -44,6 +44,8 @@ public class CourseListActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_list);
+		
+//		Toast.makeText(this, getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
 
 		if (findViewById(R.id.course_detail_container) != null) {
 			// The detail container view will be present only in the

@@ -9,12 +9,21 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
 
 /**
@@ -27,6 +36,11 @@ import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
  * interface.
  */
 public class CourseListFragment extends ListFragment {
+	
+	public String[] courseArray;
+//	public ArrayList<Semester> courseArrayList;
+	public ListView courseListView;
+	public String semesterID;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -78,8 +92,34 @@ public class CourseListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String[] courses = new String[] {"Course 1", "Course 2", "Course 3"};
-		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, courses));
+//		Toast.makeText(getActivity(), getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
+//		String[] courses = new String[] {"Course 1", "Course 2", "Course 3"};
+//		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, courses));
+		semesterID = getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID);
+		getList();
+	}
+	
+	public void getList() {
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
+		query.whereEqualTo("semester", semesterID);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> courseList, ParseException e) {
+				if (e == null) {
+		            Log.d("score", "Retrieved " + courseList.size() + " courses");
+		            courseArray = new String[courseList.size()];
+		            String courseName;
+		            for (int i = 0; i < courseList.size(); ++i) {
+		            	courseName = courseList.get(i).getString("name");
+		            	courseArray[i] = courseName;
+		            }
+		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, courseArray);
+		    		setListAdapter(arrayAdapter);
+				} else {
+		            Log.d("score", "Error: " + e.getMessage());
+		        }
+			}
+		});	
 	}
 
 	@Override
