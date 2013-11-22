@@ -11,7 +11,6 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -27,8 +26,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -39,6 +36,11 @@ public class SemesterActivity extends Activity {
 	public Intent intent;
 	public boolean isGuest;
 	public LinearLayout pbl;
+	public String[] semesterArray;
+	public ArrayList<Semester> semesterArrayList;
+	public ListView semesterListView;
+	public String semesterID;
+	public final static String EXTRA_SEMESTER_ID = "edu.mines.rmcmanus.dhunter.applicationthree.SEMESTERID";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,25 @@ public class SemesterActivity extends Activity {
 		isGuest = getIntent().getBooleanExtra(MainActivity.EXTRA_GUEST, false);
 		
 		intent = new Intent(this, CourseListActivity.class);
+		getList();
+	}
+	
+	/**
+	 * This function starts the next activity based on which semester was clicked on in 
+	 * the list
+	 */
+	public void pickCourse() {
+		intent.putExtra(EXTRA_SEMESTER_ID, semesterID);
+		startActivity(intent);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		getList();
+	}
+	
+	public void getList() {
 		pbl = (LinearLayout) findViewById(R.id.progressView);
 		pbl.setVisibility(View.VISIBLE);
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Semester");
@@ -60,22 +81,25 @@ public class SemesterActivity extends Activity {
 			public void done(List<ParseObject> semesterList, ParseException e) {
 				if (e == null) {
 		            Log.d("score", "Retrieved " + semesterList.size() + " scores");
-		            String[] semesterArray = new String[semesterList.size()];
-		            ArrayList<Semester> semesterArrayList = new ArrayList<Semester>();
+		            semesterArray = new String[semesterList.size()];
+		            semesterArrayList = new ArrayList<Semester>();
 		            String semesterType;
 		            String semesterYear;
+		            String objectId;
 		            for (int i = 0; i < semesterList.size(); ++i) {
 		            	semesterType = semesterList.get(i).getString("semester_type");
 		            	semesterYear = semesterList.get(i).getString("semester_year");
-		            	semesterArrayList.add(new Semester(semesterType, semesterYear));
+		            	objectId = semesterList.get(i).getObjectId();
+		            	semesterArrayList.add(new Semester(semesterType, semesterYear, objectId));
 		            	semesterArray[i] = semesterType + " " + semesterYear;
 		            }
 		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, semesterArray);
-		            ListView semesterListView = (ListView) findViewById(R.id.semesterlist);
+		            semesterListView = (ListView) findViewById(R.id.semesterlist);
 		    		semesterListView.setAdapter(arrayAdapter);
 		    		semesterListView.setOnItemClickListener(new OnItemClickListener() {
 		    			@Override
 		    			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		    				semesterID = semesterArrayList.get(position).objectId;
 		    				pickCourse();
 		    			}
 		    		});
@@ -85,14 +109,6 @@ public class SemesterActivity extends Activity {
 		        }
 			}
 		});	
-	}
-	
-	/**
-	 * This function starts the next activity based on which semester was clicked on in 
-	 * the list
-	 */
-	public void pickCourse() {
-		startActivity(intent);
 	}
 
 	/**
@@ -153,9 +169,7 @@ public class SemesterActivity extends Activity {
 				Intent login = new Intent(this, MainActivity.class);
 				startActivity(login);
 				finish();
-			}
-//			ParseUser currentUser = ParseUser.getCurrentUser();
-						
+			}						
 			return true;
 		}
 		

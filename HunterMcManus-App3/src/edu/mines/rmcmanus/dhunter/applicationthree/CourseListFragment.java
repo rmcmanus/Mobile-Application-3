@@ -9,12 +9,26 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
 
@@ -28,6 +42,11 @@ import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
  * interface.
  */
 public class CourseListFragment extends ListFragment {
+	
+	public String[] courseArray;
+//	public ArrayList<Semester> courseArrayList;
+	public ListView courseListView;
+	public String semesterID;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -79,8 +98,53 @@ public class CourseListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String[] courses = new String[] {"Course 1", "Course 2", "Course 3"};
-		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, courses));
+//		Toast.makeText(getActivity(), getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
+//		String[] courses = new String[] {"Course 1", "Course 2", "Course 3"};
+//		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, courses));
+		semesterID = getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID);
+		getList();
+	}
+	
+	public void getList() {
+//		pbl = (LinearLayout) findViewById(R.id.progressView);
+//		pbl.setVisibility(View.VISIBLE);
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
+		query.whereEqualTo("semester", semesterID);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> courseList, ParseException e) {
+				if (e == null) {
+		            Log.d("score", "Retrieved " + courseList.size() + " courses");
+		            courseArray = new String[courseList.size()];
+//		            courseArrayList = new ArrayList<Semester>();
+//		            String semesterType;
+//		            String semesterYear;
+		            String courseName;
+		            String objectId;
+		            for (int i = 0; i < courseList.size(); ++i) {
+//		            	semesterType = courseList.get(i).getString("semester_type");
+		            	courseName = courseList.get(i).getString("name");
+//		            	objectId = semesterList.get(i).getObjectId();
+//		            	semesterArrayList.add(new Semester(semesterType, semesterYear, objectId));
+//		            	courseArray[i] = semesterType + " " + semesterYear;
+		            	courseArray[i] = courseName;
+		            }
+		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, courseArray);
+//		            courseListView = (ListView) findViewById(R.id.semesterlist);
+		    		setListAdapter(arrayAdapter);
+//		    		courseListView.setOnItemClickListener(new OnItemClickListener() {
+//		    			@Override
+//		    			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+////		    				semesterID = semesterArrayList.get(position).objectId;
+////		    				pickCourse();
+//		    			}
+//		    		});
+//		    		pbl.setVisibility(View.INVISIBLE);
+				} else {
+		            Log.d("score", "Error: " + e.getMessage());
+		        }
+			}
+		});	
 	}
 
 	@Override

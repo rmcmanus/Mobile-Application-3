@@ -12,6 +12,7 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 /**
  * An activity representing a list of Courses. This activity has different
@@ -41,6 +42,8 @@ public class CourseListActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_list);
+		
+//		Toast.makeText(this, getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
 
 		if (findViewById(R.id.course_detail_container) != null) {
 			// The detail container view will be present only in the
