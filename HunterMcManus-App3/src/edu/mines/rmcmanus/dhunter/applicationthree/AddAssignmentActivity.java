@@ -8,16 +8,35 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
-import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import java.util.Calendar;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 public class AddAssignmentActivity extends Activity {
+	
+	EditText assignmentName, pointValue;
+	String assignmentPriority, assignmentType;
+	String dateDue = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_add_assignment);
+		
+		Calendar c = Calendar.getInstance();
+		dateDue = c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR);
+		
 		//Populate the spinner with priorities high, medium, low
 		Spinner prioritySpinner = (Spinner) findViewById(R.id.assignmentPrioritySpinner);
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.priorityArray, android.R.layout.simple_spinner_dropdown_item);
@@ -30,5 +49,49 @@ public class AddAssignmentActivity extends Activity {
 		ArrayAdapter<CharSequence> arrayAdapter1 = ArrayAdapter.createFromResource(this, R.array.testTypesArray, android.R.layout.simple_spinner_dropdown_item);
 		arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		typeSpinner.setAdapter(arrayAdapter1);
+		
+		prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				assignmentPriority = (String) parent.getItemAtPosition(position); 
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+		
+		typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				assignmentType = (String) parent.getItemAtPosition(position); 
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+		
+		assignmentName = (EditText) findViewById(R.id.addAssignmentName);
+		pointValue = (EditText) findViewById(R.id.addAssignmentPointValue);
+		
+		((CalendarView) findViewById(R.id.calendarView1)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+			@Override
+			public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+				dateDue = month + "/" + dayOfMonth + "/" + year;
+			}
+		});
+	}
+	
+	public void addAssignment(View view) {
+		ParseObject newAssignment = new ParseObject("Assignments");
+		newAssignment.put("user", ParseUser.getCurrentUser());
+		newAssignment.put("assignmentName", assignmentName.getText().toString());
+		newAssignment.put("pointValue", pointValue.getText().toString());
+		newAssignment.put("assignmentPriority", assignmentPriority);
+		newAssignment.put("assignmentType", assignmentType);
+		newAssignment.put("dateDue", dateDue);
+		newAssignment.saveInBackground();
+		
+		Intent intent = new Intent(this, CourseListActivity.class);
+		startActivity(intent);
 	}
 }

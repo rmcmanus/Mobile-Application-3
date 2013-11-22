@@ -12,6 +12,9 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * An activity representing a list of Courses. This activity has different
@@ -56,6 +59,54 @@ public class CourseListActivity extends FragmentActivity implements
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		if (mTwoPane)
+			getMenuInflater().inflate(R.menu.two_pane_assignment, menu);
+		else
+			getMenuInflater().inflate(R.menu.assignment, menu);
+		return true;
+	}
+
+	//Does an action based on the item selected in the Context menu
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			//
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.addAssignmentContext:
+			Intent intent = new Intent(this, AddAssignmentActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.addCourseContext:
+			Intent addCourse = new Intent(this, AddCourseActivity.class);
+			startActivity(addCourse);
+			return true;
+		case R.id.setting:
+			Intent setting = new Intent(this, SettingActivity.class);
+			startActivity(setting);
+			return true;
+		case R.id.about:
+			Intent about = new Intent(this, AboutActivity.class);
+			startActivity(about);
+			return true;
+		case R.id.help:
+			Intent help = new Intent(this, HelpActivity.class);
+			startActivity(help);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**

@@ -15,7 +15,6 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
 
 /**

@@ -90,5 +90,8 @@
     <string name="testPointValue">100</string>
     <string name="testDueDate">10/17/2013</string>
     <string name="duplicateemail">Sorry, that email already exists</string>
+    
+    <string name="menu_add_course">Add Course</string>
+    <string name="menu_add_assignment">Add Assignment</string>
 
 </resources>
