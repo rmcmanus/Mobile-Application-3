@@ -93,5 +93,6 @@
     
     <string name="menu_add_course">Add Course</string>
     <string name="menu_add_assignment">Add Assignment</string>
+    <string name="yearError">You must enter a year</string>
 
 </resources>
