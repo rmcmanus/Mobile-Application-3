@@ -9,25 +9,36 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class SemesterActivity extends Activity {
 	public Intent intent;
 	public boolean isGuest;
+	public LinearLayout pbl;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +49,42 @@ public class SemesterActivity extends Activity {
 		
 		//Gets weather the user signed in as a guest or not
 		isGuest = getIntent().getBooleanExtra(MainActivity.EXTRA_GUEST, false);
-
-		//Fills the list with dummy data		
-		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.testSemesters, android.R.layout.simple_list_item_1);
-		ListView semesterList = (ListView) findViewById(R.id.semesterlist);
-		semesterList.setAdapter(arrayAdapter);
-		//intent = new Intent(this, CourseActivity.class);
+		
 		intent = new Intent(this, CourseListActivity.class);
-		semesterList.setOnItemClickListener(new OnItemClickListener() {
+		pbl = (LinearLayout) findViewById(R.id.progressView);
+		pbl.setVisibility(View.VISIBLE);
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Semester");
+		query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				pickCourse();
+			public void done(List<ParseObject> semesterList, ParseException e) {
+				if (e == null) {
+		            Log.d("score", "Retrieved " + semesterList.size() + " scores");
+		            String[] semesterArray = new String[semesterList.size()];
+		            ArrayList<Semester> semesterArrayList = new ArrayList<Semester>();
+		            String semesterType;
+		            String semesterYear;
+		            for (int i = 0; i < semesterList.size(); ++i) {
+		            	semesterType = semesterList.get(i).getString("semester_type");
+		            	semesterYear = semesterList.get(i).getString("semester_year");
+		            	semesterArrayList.add(new Semester(semesterType, semesterYear));
+		            	semesterArray[i] = semesterType + " " + semesterYear;
+		            }
+		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, semesterArray);
+		            ListView semesterListView = (ListView) findViewById(R.id.semesterlist);
+		    		semesterListView.setAdapter(arrayAdapter);
+		    		semesterListView.setOnItemClickListener(new OnItemClickListener() {
+		    			@Override
+		    			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		    				pickCourse();
+		    			}
+		    		});
+		    		pbl.setVisibility(View.INVISIBLE);
+				} else {
+		            Log.d("score", "Error: " + e.getMessage());
+		        }
 			}
-		});
+		});	
 	}
 	
 	/**

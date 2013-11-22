@@ -90,5 +90,6 @@
     <string name="testPointValue">100</string>
     <string name="testDueDate">10/17/2013</string>
     <string name="duplicateemail">Sorry, that email already exists</string>
+    <string name="yearError">You must enter a year</string>
 
 </resources>

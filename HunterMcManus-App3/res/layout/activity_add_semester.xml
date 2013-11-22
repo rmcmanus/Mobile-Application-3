@@ -64,12 +64,14 @@
         </RadioGroup>
 
         <EditText
+            android:id="@+id/othersemester"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="@string/other" />
 
         <EditText
+            android:id="@+id/semesteryear"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,7 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="@string/submit" />
+            android:hint="@string/submit" 
+            android:onClick="addSemester"/>
     </LinearLayout>
     
     <LinearLayout
