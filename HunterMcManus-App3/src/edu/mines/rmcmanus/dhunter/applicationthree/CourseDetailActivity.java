@@ -53,12 +53,13 @@ public class CourseDetailActivity extends FragmentActivity {
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(CourseDetailFragment.ARG_ITEM_ID));
+			arguments.putString(CourseListActivity.EXTRA_COURSE_ID, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID));
 			CourseDetailFragment fragment = new CourseDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
 		}
 		
-//		Toast.makeText(this, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID), Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
