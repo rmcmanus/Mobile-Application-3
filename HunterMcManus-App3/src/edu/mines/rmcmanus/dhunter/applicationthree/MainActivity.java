@@ -69,8 +69,12 @@ public class MainActivity extends FragmentActivity {
 		// If true, moves directly to the semester activity
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser != null) {
+			ParseUser.getCurrentUser().increment("RunCount");
 			startSemesterIntent();
 		}
+		ParseUser.enableAutomaticUser();
+		ParseUser.getCurrentUser().increment("RunCount");
+		ParseUser.getCurrentUser().saveInBackground();
 	}
 
 	/**
@@ -114,9 +118,6 @@ public class MainActivity extends FragmentActivity {
 	public void guest(View v) {
 		// Creates an automatic user in Parse if not logged in. Once logged in, data is saved
 		// to that new or existing user
-		ParseUser.enableAutomaticUser();
-		ParseUser.getCurrentUser().increment("RunCount");
-		ParseUser.getCurrentUser().saveInBackground();
 		showWarningDialog();
 	}
 
