@@ -23,6 +23,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
 
@@ -68,7 +69,7 @@ public class CourseListFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(String id, String courseName);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class CourseListFragment extends ListFragment {
 	 */
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id) {
+		public void onItemSelected(String id, String courseName) {
 		}
 	};
 
@@ -108,6 +109,7 @@ public class CourseListFragment extends ListFragment {
 	public void getList() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
 		query.whereEqualTo("semester", semesterID);
+		query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> courseList, ParseException e) {
@@ -168,7 +170,8 @@ public class CourseListFragment extends ListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+		String courseName = listView.getItemAtPosition(position).toString();
+		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id, courseName);
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * A fragment representing a single Course detail screen. This fragment is
@@ -45,6 +46,8 @@ public class CourseDetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Toast.makeText(getActivity(), getArguments().getString(CourseListActivity.EXTRA_COURSE_ID), Toast.LENGTH_SHORT).show();
 		
 		String[] dummyValues = new String[] {"Assignment 1", "Assignment 2", "Assignment 3"};
 		assignmentList = new ArrayList<String>();
