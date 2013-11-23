@@ -99,6 +99,12 @@ public class CourseListFragment extends ListFragment {
 		getList();
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		getList();
+	}
+	
 	public void getList() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
 		query.whereEqualTo("semester", semesterID);

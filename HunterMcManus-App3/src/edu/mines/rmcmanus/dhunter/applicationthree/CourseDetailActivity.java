@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * An activity representing a single Course detail screen. This activity is only
@@ -52,6 +53,8 @@ public class CourseDetailActivity extends FragmentActivity {
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
 		}
+		
+//		Toast.makeText(this, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID), Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override

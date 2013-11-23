@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * An activity representing a list of Courses. This activity has different
@@ -39,14 +40,17 @@ public class CourseListActivity extends FragmentActivity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
-
+	public final static String EXTRA_SEMESTER_ID = "edu.mines.rmcmanus.dhunter.applicationthree.SEMESTERID";
+	public final static String EXTRA_COURSE_ID = "edu.mines.rmcmanus.dhunter.applicationthree.COURSEID";
+	public String semesterID;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_list);
 		
-//		Toast.makeText(this, getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
-
+        semesterID = getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID);
+		
 		if (findViewById(R.id.course_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
@@ -69,7 +73,7 @@ public class CourseListActivity extends FragmentActivity implements
 		if (mTwoPane)
 			getMenuInflater().inflate(R.menu.two_pane_assignment, menu);
 		else
-			getMenuInflater().inflate(R.menu.assignment, menu);
+			getMenuInflater().inflate(R.menu.course, menu);
 		return true;
 	}
 
@@ -93,6 +97,7 @@ public class CourseListActivity extends FragmentActivity implements
 			return true;
 		case R.id.addCourseContext:
 			Intent addCourse = new Intent(this, AddCourseActivity.class);
+			addCourse.putExtra(EXTRA_SEMESTER_ID, semesterID);
 			startActivity(addCourse);
 			return true;
 		case R.id.setting:
@@ -131,7 +136,9 @@ public class CourseListActivity extends FragmentActivity implements
 		} else {
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
+//			TextView test = (TextView) findViewById(Integer.parseInt(id));
 			Intent detailIntent = new Intent(this, CourseDetailActivity.class);
+//			detailIntent.putExtra(EXTRA_COURSE_ID, test.getText().toString());
 			detailIntent.putExtra(CourseDetailFragment.ARG_ITEM_ID, id);
 			startActivity(detailIntent);
 		}
