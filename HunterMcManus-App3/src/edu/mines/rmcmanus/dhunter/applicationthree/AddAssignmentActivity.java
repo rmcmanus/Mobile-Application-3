@@ -27,10 +27,13 @@ public class AddAssignmentActivity extends Activity {
 	EditText assignmentName, pointValue;
 	String assignmentPriority, assignmentType;
 	String dateDue = "";
+	String courseID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
 		
 		setContentView(R.layout.activity_add_assignment);
 		
@@ -89,9 +92,11 @@ public class AddAssignmentActivity extends Activity {
 		newAssignment.put("assignmentPriority", assignmentPriority);
 		newAssignment.put("assignmentType", assignmentType);
 		newAssignment.put("dateDue", dateDue);
+		newAssignment.put("course", courseID);
 		newAssignment.saveInBackground();
 		
-		Intent intent = new Intent(this, CourseListActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(this, CourseListActivity.class);
+//		startActivity(intent);
+		finish();
 	}
 }

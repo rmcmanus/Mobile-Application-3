@@ -24,7 +24,6 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
 
@@ -110,7 +109,6 @@ public class CourseListFragment extends ListFragment {
 	public void getList() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
 		query.whereEqualTo("semester", semesterID);
-		query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> courseList, ParseException e) {

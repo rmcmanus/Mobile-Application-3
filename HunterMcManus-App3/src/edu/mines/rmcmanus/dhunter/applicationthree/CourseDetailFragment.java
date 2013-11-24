@@ -16,14 +16,17 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * A fragment representing a single Course detail screen. This fragment is
@@ -36,6 +39,8 @@ public class CourseDetailFragment extends Fragment {
 	ExpandableListView expListView;
 	List<String> listDataHeader;
 	HashMap<String, List<String>> listDataChild;
+
+	String courseID;
 
 	ArrayList<String> assignmentList;
 	/**
@@ -54,79 +59,58 @@ public class CourseDetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//		String[] dummyValues = new String[] {"Assignment 1", "Assignment 2", "Assignment 3"};
-		//		assignmentList = new ArrayList<String>();
-		//		
-		//		for (String s : dummyValues)
-		//			assignmentList.add(s);
-		
-		Toast.makeText(getActivity(), getArguments().getString(CourseListActivity.EXTRA_COURSE_ID), Toast.LENGTH_SHORT).show();
+		courseID = getArguments().getString(CourseListActivity.EXTRA_COURSE_ID);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_course_detail, container, false);
-		//ListView list = (ListView) rootView.findViewById(R.id.assignmentsListView);
-		//ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, assignmentList);
 
 		expListView = (ExpandableListView) rootView.findViewById(R.id.assignmentsListView);
-		prepareData();
-		listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
-		expListView.setAdapter(listAdapter);
-		//		expListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		//
-		//		      @Override
-		//		      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-		////		    	  Toast.makeText(getActivity(), "This functionality is not available yet", Toast.LENGTH_SHORT).show();
-		//		    	 showAssignment();
-		//		      }
-		//
-		//		});
+		getAssignments();
 
 		return rootView;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getAssignments();
+	}
+
+	public void getAssignments() {
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignments");
+		query.whereEqualTo("course", courseID);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> assignmentList, ParseException e) {
+				if (e == null) {
+					Log.d("score", "Retrieved " + assignmentList.size() + " assignments");
+
+					listDataChild = new HashMap<String, List<String>>();
+					listDataHeader = new ArrayList<String>();
+					List<String> assignmentContents;
+					for (int i = 0; i < assignmentList.size(); ++i) {
+						assignmentContents = new ArrayList<String>();
+						listDataHeader.add(assignmentList.get(i).getString("assignmentName"));
+						assignmentContents.add(assignmentList.get(i).getString("dateDue"));
+						assignmentContents.add(assignmentList.get(i).getString("pointValue"));
+						assignmentContents.add(assignmentList.get(i).getString("assignmentPriority"));
+						assignmentContents.add(assignmentList.get(i).getString("assignmentType"));
+						listDataChild.put(listDataHeader.get(i), assignmentContents);
+					}
+
+					listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+					expListView.setAdapter(listAdapter);
+				} else {
+					Log.d("score", "Error: " + e.getMessage());
+				}
+			}
+		});	
 	}
 
 	public void showAssignment() {
 		Intent intent = new Intent(getActivity(), ShowAssignmentActivity.class);
 		startActivity(intent);
-	}
-
-	public void prepareData() {
-		listDataHeader = new ArrayList<String>();
-		listDataChild = new HashMap<String, List<String>>();
-
-		// Adding child data
-		listDataHeader.add("Top 250");
-		listDataHeader.add("Now Showing");
-		listDataHeader.add("Coming Soon..");
-
-		// Adding child data
-		List<String> top250 = new ArrayList<String>();
-		top250.add("The Shawshank Redemption");
-		top250.add("The Godfather");
-		top250.add("The Godfather: Part II");
-		top250.add("Pulp Fiction");
-		top250.add("The Good, the Bad and the Ugly");
-		top250.add("The Dark Knight");
-		top250.add("12 Angry Men");
-
-		List<String> nowShowing = new ArrayList<String>();
-		nowShowing.add("The Conjuring");
-		nowShowing.add("Despicable Me 2");
-		nowShowing.add("Turbo");
-		nowShowing.add("Grown Ups 2");
-		nowShowing.add("Red 2");
-		nowShowing.add("The Wolverine");
-
-		List<String> comingSoon = new ArrayList<String>();
-		comingSoon.add("2 Guns");
-		comingSoon.add("The Smurfs 2");
-		comingSoon.add("The Spectacular Now");
-		comingSoon.add("The Canyons");
-		comingSoon.add("Europa Report");
-
-		listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-		listDataChild.put(listDataHeader.get(1), nowShowing);
-		listDataChild.put(listDataHeader.get(2), comingSoon);
 	}
 }

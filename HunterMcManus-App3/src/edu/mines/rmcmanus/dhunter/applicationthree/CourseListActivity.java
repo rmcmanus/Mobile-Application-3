@@ -101,6 +101,7 @@ public class CourseListActivity extends FragmentActivity implements
 			return true;
 		case R.id.addAssignmentContext:
 			Intent intent = new Intent(this, AddAssignmentActivity.class);
+			intent.putExtra(EXTRA_COURSE_ID, courseID);
 			startActivity(intent);
 			return true;
 		case R.id.addCourseContext:
