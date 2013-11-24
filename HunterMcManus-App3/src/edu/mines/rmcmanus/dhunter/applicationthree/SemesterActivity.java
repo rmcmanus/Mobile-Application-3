@@ -93,7 +93,7 @@ public class SemesterActivity extends Activity {
 		            	semesterArrayList.add(new Semester(semesterType, semesterYear, objectId));
 		            	semesterArray[i] = semesterType + " " + semesterYear;
 		            }
-		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, semesterArray);
+		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_list, semesterArray);
 		            semesterListView = (ListView) findViewById(R.id.semesterlist);
 		    		semesterListView.setAdapter(arrayAdapter);
 		    		semesterListView.setOnItemClickListener(new OnItemClickListener() {

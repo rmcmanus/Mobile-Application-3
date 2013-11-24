@@ -81,11 +81,16 @@ public class AddCourseActivity extends Activity {
 							category.put("course", courseID);
 							category.put("category_name", categories.get(i));
 							category.put("weight", weights.get(i));
-							category.saveInBackground();
+							category.put("user", ParseUser.getCurrentUser());
+							category.saveInBackground(new SaveCallback() {
+								@Override
+								public void done(ParseException e) {
+									finish();
+								}
+							});
 						}
 					}
 				});
-				finish();
 			}
 		}
 	}

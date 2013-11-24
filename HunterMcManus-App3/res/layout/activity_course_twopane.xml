@@ -8,6 +8,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
+    android:background="@drawable/simplebackground"
     tools:context=".CourseListActivity" >
 
     <!--
@@ -32,6 +33,7 @@
     <FrameLayout
         android:id="@+id/course_detail_container"
         android:layout_width="0dp"
+        android:background="@drawable/backtoschool"
         android:layout_height="match_parent"
         android:layout_weight="3" />
 

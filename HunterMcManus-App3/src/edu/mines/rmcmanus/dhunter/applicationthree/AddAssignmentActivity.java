@@ -8,19 +8,26 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.AdapterView.OnItemClickListener;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 public class AddAssignmentActivity extends Activity {
@@ -29,6 +36,7 @@ public class AddAssignmentActivity extends Activity {
 	String assignmentPriority, assignmentType;
 	String dateDue = "";
 	String courseID;
+	public String categoryArray[];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +54,45 @@ public class AddAssignmentActivity extends Activity {
 		
 		//Populate the spinner with priorities high, medium, low
 		Spinner prioritySpinner = (Spinner) findViewById(R.id.assignmentPrioritySpinner);
-		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.priorityArray, android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.priorityArray, R.layout.spinner_layout);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		prioritySpinner.setAdapter(arrayAdapter);
 		
 		//Populate the spinner with assignment types.  For the final submission it will
 		//be populated based on information stored about the course in the database
-		Spinner typeSpinner = (Spinner) findViewById(R.id.assignmentTypeSpinner);
-		ArrayAdapter<CharSequence> arrayAdapter1 = ArrayAdapter.createFromResource(this, R.array.testTypesArray, android.R.layout.simple_spinner_dropdown_item);
-		arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		typeSpinner.setAdapter(arrayAdapter1);
+		
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Category");
+		query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.whereEqualTo("course", courseID);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> categoryList, ParseException e) {
+				if (e == null) {
+		            Log.d("score", "Retrieved " + categoryList.size() + " categories");
+		            categoryArray = new String[categoryList.size()];
+		            for (int i = 0; i < categoryList.size(); ++i) {
+		            	categoryArray[i] = categoryList.get(i).getString("category_name");
+		            }
+		            ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_layout, categoryArray);
+		            Spinner typeSpinner = (Spinner) findViewById(R.id.assignmentTypeSpinner);
+		    		courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		    		typeSpinner.setAdapter(courseAdapter);
+		    		typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		    			@Override
+		    			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		    				assignmentType = (String) parent.getItemAtPosition(position); 
+		    			}
+		    			@Override
+		    			public void onNothingSelected(AdapterView<?> arg0) {
+		    			}
+		    		});
+				} else {
+		            Log.d("score", "Error: " + e.getMessage());
+		        }
+			}
+		});	
+		
+		
 		
 		prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -67,15 +104,6 @@ public class AddAssignmentActivity extends Activity {
 			}
 		});
 		
-		typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				assignmentType = (String) parent.getItemAtPosition(position); 
-			}
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
 		
 		assignmentName = (EditText) findViewById(R.id.addAssignmentName);
 		pointValue = (EditText) findViewById(R.id.addAssignmentPointValue);
