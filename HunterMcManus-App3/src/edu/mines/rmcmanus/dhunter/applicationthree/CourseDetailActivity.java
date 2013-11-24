@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 /**
  * An activity representing a single Course detail screen. This activity is only
@@ -26,7 +25,10 @@ import android.widget.Toast;
  * a {@link CourseDetailFragment}.
  */
 public class CourseDetailActivity extends FragmentActivity {
-
+	
+	public final static String EXTRA_COURSE_ID = "edu.mines.rmcmanus.dhunter.applicationthree.COURSEADDID";
+	public String courseID;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,12 +52,14 @@ public class CourseDetailActivity extends FragmentActivity {
 			Bundle arguments = new Bundle();
 			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(CourseDetailFragment.ARG_ITEM_ID));
 			arguments.putString(CourseListActivity.EXTRA_COURSE_ID, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID));
+			courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
 			CourseDetailFragment fragment = new CourseDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
 		}
 		
-		Toast.makeText(this, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID), Toast.LENGTH_SHORT).show();
+		courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
+		
 	}
 	
 	@Override
@@ -82,6 +86,7 @@ public class CourseDetailActivity extends FragmentActivity {
 			return true;
 		case R.id.addAssignmentContext:
 			Intent intent = new Intent(this, AddAssignmentActivity.class);
+			intent.putExtra(EXTRA_COURSE_ID, courseID);
 			startActivity(intent);
 			return true;
 		case R.id.setting:

@@ -19,8 +19,10 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 public class AddAssignmentActivity extends Activity {
 	
 	EditText assignmentName, pointValue;
@@ -32,12 +34,15 @@ public class AddAssignmentActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
+		courseID = getIntent().getStringExtra(CourseDetailActivity.EXTRA_COURSE_ID);
+		if (courseID == null) {
+			courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
+		}
 		
 		setContentView(R.layout.activity_add_assignment);
 		
 		Calendar c = Calendar.getInstance();
-		dateDue = c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR);
+		dateDue = (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR);
 		
 		//Populate the spinner with priorities high, medium, low
 		Spinner prioritySpinner = (Spinner) findViewById(R.id.assignmentPrioritySpinner);
@@ -78,7 +83,7 @@ public class AddAssignmentActivity extends Activity {
 		((CalendarView) findViewById(R.id.calendarView1)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 			@Override
 			public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-				dateDue = month + "/" + dayOfMonth + "/" + year;
+				dateDue = (month + 1) + "/" + dayOfMonth + "/" + year;
 			}
 		});
 	}
@@ -92,10 +97,16 @@ public class AddAssignmentActivity extends Activity {
 		newAssignment.put("assignmentType", assignmentType);
 		newAssignment.put("dateDue", dateDue);
 		newAssignment.put("course", courseID);
-		newAssignment.saveInBackground();
+		newAssignment.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException e) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
 		
 //		Intent intent = new Intent(this, CourseListActivity.class);
 //		startActivity(intent);
-		finish();
 	}
 }
