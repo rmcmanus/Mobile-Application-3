@@ -121,7 +121,7 @@ public class CourseListFragment extends ListFragment {
 		            	courseName = courseList.get(i).getString("name");
 		            	courseArray[i] = courseName;
 		            }
-		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, courseArray);
+		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
 		    		setListAdapter(arrayAdapter);
 				} else {
 		            Log.d("score", "Error: " + e.getMessage());

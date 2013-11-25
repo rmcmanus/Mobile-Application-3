@@ -72,9 +72,10 @@ public class MainActivity extends FragmentActivity {
 			ParseUser.getCurrentUser().increment("RunCount");
 			startSemesterIntent();
 		}
-		ParseUser.enableAutomaticUser();
-		ParseUser.getCurrentUser().increment("RunCount");
-		ParseUser.getCurrentUser().saveInBackground();
+
+//		ParseUser.enableAutomaticUser();
+//		ParseUser.getCurrentUser().increment("RunCount");
+//		ParseUser.getCurrentUser().saveInBackground();
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class MainActivity extends FragmentActivity {
 		String password = loginPassword.getText().toString();
 		Log.d("Parse Error", username);
 		Log.d("Parse Error", password);
-		
+
 		//A parse API call to check if the user exists in the database and try to log them in
 		ParseUser.logInInBackground(username, password, new LogInCallback() {
 			public void done(ParseUser user, ParseException e) {
@@ -135,7 +136,7 @@ public class MainActivity extends FragmentActivity {
 		String userPassword = password.getText().toString();
 		String confirm= confirmPassword.getText().toString();
 		String userEmail = email.getText().toString();
-		
+
 		if (firstName.equals("") || lastName.equals("") || userPassword.equals("") || 
 				confirm.equals("") || userEmail.equals("")) {
 			TextView invalid = (TextView) findViewById(R.id.errorlabel);
@@ -204,7 +205,7 @@ public class MainActivity extends FragmentActivity {
 
 		});
 	}
-	
+
 	/**
 	 * This function is called when the user has finished either logging in or signing up
 	 * successfully.  This function starts the next intent.

@@ -71,6 +71,10 @@ public class CourseListActivity extends FragmentActivity implements
 			((CourseListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.course_list)).setActivateOnItemClick(true);
 		}
+		
+		if (!mTwoPane) {
+			this.getWindow().setBackgroundDrawableResource(R.drawable.backtoschool);
+		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
 	}
@@ -123,10 +127,6 @@ public class CourseListActivity extends FragmentActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	public void getCourseID() {
-		
 	}
 
 	/**

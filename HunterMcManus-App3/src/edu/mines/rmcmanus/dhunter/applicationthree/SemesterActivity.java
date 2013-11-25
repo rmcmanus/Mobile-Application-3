@@ -47,7 +47,7 @@ public class SemesterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_semester);
 		// Show the Up button in the action bar.
-		setupActionBar();
+        setupActionBar();
 		
 		//Gets weather the user signed in as a guest or not
 		isGuest = getIntent().getBooleanExtra(MainActivity.EXTRA_GUEST, false);
@@ -111,15 +111,12 @@ public class SemesterActivity extends Activity {
 		});	
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
+    private void setupActionBar() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    getActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

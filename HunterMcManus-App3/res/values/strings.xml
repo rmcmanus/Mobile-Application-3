@@ -12,9 +12,9 @@
     <string name="firstname">First Name</string>
     <string name="lastname">Last Name</string>
     <string name="email">Email</string>
-    <string name="title_activity_semester">SemesterActivity</string>
-    <string name="title_activity_course">CourseActivity</string>
-    <string name="title_activity_assignment">AssignmentActivity</string>
+    <string name="title_activity_semester">Semesters</string>
+    <string name="title_activity_course">Courses</string>
+    <string name="title_activity_assignment">Assignments</string>
     <string name="title_activity_show_assignment">ShowAssignmentActivity</string>
     <string name="name">Name:</string>
     <string name="type">Type:</string>
@@ -22,9 +22,9 @@
     <string name="pointvalue">Point Value:</string>
     <string name="duedate">Due Date:</string>
     <string name="menu_add">Add</string>
-    <string name="title_activity_add_semester">AddSemesterActivity</string>
-    <string name="title_activity_add_course">AddCourseActivity</string>
-    <string name="title_activity_add_assignment">AddAssignmentActivity</string>
+    <string name="title_activity_add_semester">Add A Semester</string>
+    <string name="title_activity_add_course">Add A Course</string>
+    <string name="title_activity_add_assignment">Add An Assignment</string>
     <string name="setting">Settings</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="title_activity_about">AboutActivity</string>
@@ -96,5 +96,11 @@
     <string name="yearError">You must enter a year</string>
     <string name="courseNameError">You must enter a course name</string>
     <string name="courseTypeError">You must enter at least 1 course type</string>
+    <string name="assignmentNameError">You must enter an assignment name</string>
+    <string name="assignmentPointsError">You must enter a point value</string>
+    <string name="appendDueDate">Due Date:</string>
+    <string name="appendPriority">Priority:</string>
+    <string name="appendPointValue">Point Value:</string>
+    <string name="appendType">Type:</string>
 
 </resources>

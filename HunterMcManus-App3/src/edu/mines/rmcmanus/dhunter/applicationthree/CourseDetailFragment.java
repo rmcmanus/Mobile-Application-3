@@ -92,10 +92,10 @@ public class CourseDetailFragment extends Fragment {
 					for (int i = 0; i < assignmentList.size(); ++i) {
 						assignmentContents = new ArrayList<String>();
 						listDataHeader.add(assignmentList.get(i).getString("assignmentName"));
-						assignmentContents.add(assignmentList.get(i).getString("dateDue"));
-						assignmentContents.add(assignmentList.get(i).getString("pointValue"));
-						assignmentContents.add(assignmentList.get(i).getString("assignmentPriority"));
-						assignmentContents.add(assignmentList.get(i).getString("assignmentType"));
+						assignmentContents.add(getString(R.string.appendDueDate) + " " + assignmentList.get(i).getString("dateDue"));
+						assignmentContents.add(getString(R.string.appendPointValue) + " " + assignmentList.get(i).getString("pointValue"));
+						assignmentContents.add(getString(R.string.appendPriority) + " " + assignmentList.get(i).getString("assignmentPriority"));
+						assignmentContents.add(getString(R.string.appendType) + " " + assignmentList.get(i).getString("assignmentType"));
 						listDataChild.put(listDataHeader.get(i), assignmentContents);
 					}
 

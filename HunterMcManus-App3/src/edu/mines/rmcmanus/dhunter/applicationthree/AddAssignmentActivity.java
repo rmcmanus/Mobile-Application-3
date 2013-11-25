@@ -8,10 +8,8 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,10 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemClickListener;
-
+import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -58,8 +54,7 @@ public class AddAssignmentActivity extends Activity {
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		prioritySpinner.setAdapter(arrayAdapter);
 		
-		//Populate the spinner with assignment types.  For the final submission it will
-		//be populated based on information stored about the course in the database
+		//Populate the spinner with assignment types that were set when the course was added
 		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Category");
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
@@ -117,24 +112,29 @@ public class AddAssignmentActivity extends Activity {
 	}
 	
 	public void addAssignment(View view) {
-		ParseObject newAssignment = new ParseObject("Assignments");
-		newAssignment.put("user", ParseUser.getCurrentUser());
-		newAssignment.put("assignmentName", assignmentName.getText().toString());
-		newAssignment.put("pointValue", pointValue.getText().toString());
-		newAssignment.put("assignmentPriority", assignmentPriority);
-		newAssignment.put("assignmentType", assignmentType);
-		newAssignment.put("dateDue", dateDue);
-		newAssignment.put("course", courseID);
-		newAssignment.saveInBackground(new SaveCallback() {
-			
-			@Override
-			public void done(ParseException e) {
-				// TODO Auto-generated method stub
-				finish();
+		if (assignmentName.getText().toString().equals("")) {
+			Toast.makeText(this, getString(R.string.assignmentNameError), Toast.LENGTH_SHORT).show();
+		}
+		else {
+			if (pointValue.getText().toString().equals("")) {
+				Toast.makeText(this, getString(R.string.assignmentPointsError), Toast.LENGTH_SHORT).show();
 			}
-		});
-		
-//		Intent intent = new Intent(this, CourseListActivity.class);
-//		startActivity(intent);
+			else {
+				ParseObject newAssignment = new ParseObject("Assignments");
+				newAssignment.put("user", ParseUser.getCurrentUser());
+				newAssignment.put("assignmentName", assignmentName.getText().toString());
+				newAssignment.put("pointValue", pointValue.getText().toString());
+				newAssignment.put("assignmentPriority", assignmentPriority);
+				newAssignment.put("assignmentType", assignmentType);
+				newAssignment.put("dateDue", dateDue);
+				newAssignment.put("course", courseID);
+				newAssignment.saveInBackground(new SaveCallback() {
+					@Override
+					public void done(ParseException e) {
+						finish();
+					}
+				});
+			}
+		}
 	}
 }
