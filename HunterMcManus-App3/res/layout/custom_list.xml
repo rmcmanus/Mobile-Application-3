@@ -6,4 +6,6 @@
     android:textColor="#FFFFFF"
     android:textIsSelectable="false"
     android:textStyle="bold"
-    android:textSize="20pt" />
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:textSize="10pt" />
