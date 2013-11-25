@@ -1,3 +1,15 @@
+/**
+ * The following link contains a tutorial that the given code in this adapter was
+ * adapted from:
+ * http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
+ * 
+ * Adapter had to be changed slightly to fit into a fragment on an activity instead
+ * of within an activity. All credit goes to the author for an ExpandableListView
+ * adapter to integrate into our codebase.
+ * 
+ * @author Ravi Tamada
+ */
+
 package edu.mines.rmcmanus.dhunter.applicationthree;
  
 import java.util.HashMap;
