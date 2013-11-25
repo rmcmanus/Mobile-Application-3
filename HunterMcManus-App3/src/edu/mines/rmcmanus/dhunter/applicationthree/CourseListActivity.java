@@ -40,7 +40,7 @@ import android.view.MenuItem;
  * {@link CourseListFragment.Callbacks} interface to listen for item selections.
  */
 public class CourseListActivity extends FragmentActivity implements
-		CourseListFragment.Callbacks {
+CourseListFragment.Callbacks {
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -51,14 +51,14 @@ public class CourseListActivity extends FragmentActivity implements
 	public final static String EXTRA_COURSE_ID = "edu.mines.rmcmanus.dhunter.applicationthree.COURSEID";
 	public String semesterID;
 	public String courseID;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_list);
-		
-        semesterID = getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID);
-		
+
+		semesterID = getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID);
+
 		if (findViewById(R.id.course_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
@@ -71,14 +71,14 @@ public class CourseListActivity extends FragmentActivity implements
 			((CourseListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.course_list)).setActivateOnItemClick(true);
 		}
-		
+
 		if (!mTwoPane) {
 			this.getWindow().setBackgroundDrawableResource(R.drawable.backtoschool);
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -134,45 +134,47 @@ public class CourseListActivity extends FragmentActivity implements
 	 * the item with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(final String id, String courseName) {
+	public void onItemSelected(final String id, String courseName, boolean hasCourses) {
 		Log.d("Test", id);
-		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
-		query.whereEqualTo("semester", semesterID);
-		query.whereEqualTo("user", ParseUser.getCurrentUser());
-		query.whereEqualTo("name", courseName);
-		query.findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(List<ParseObject> courseList, ParseException e) {
-				if (e == null) {
-		            Log.d("score", "Retrieved " + courseList.size() + " courses");
-		            for (int i = 0; i < courseList.size(); ++i) {
-		            	courseID = courseList.get(i).getObjectId();
-		            }
-		            if (mTwoPane) {
-		    			// In two-pane mode, show the detail view in this activity by
-		    			// adding or replacing the detail fragment using a
-		    			// fragment transaction.
-		    			Bundle arguments = new Bundle();
-		    			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
-		    			arguments.putString(EXTRA_COURSE_ID, courseID);
-		    			CourseDetailFragment fragment = new CourseDetailFragment();
-		    			fragment.setArguments(arguments);
-		    			getSupportFragmentManager().beginTransaction()
-		    					.replace(R.id.course_detail_container, fragment).commit();
+		if (!hasCourses) {
 
-		    		} else {
-		    			// In single-pane mode, simply start the detail activity
-		    			// for the selected item ID.
-		    			startTheIntent(id);
-		    		}
-				} else {
-		            Log.d("score", "Error: " + e.getMessage());
-		        }
-			}
-		});	
+			ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
+			query.whereEqualTo("semester", semesterID);
+			query.whereEqualTo("user", ParseUser.getCurrentUser());
+			query.whereEqualTo("name", courseName);
+			query.findInBackground(new FindCallback<ParseObject>() {
+				@Override
+				public void done(List<ParseObject> courseList, ParseException e) {
+					if (e == null) {
+						Log.d("score", "Retrieved " + courseList.size() + " courses");
+						for (int i = 0; i < courseList.size(); ++i) {
+							courseID = courseList.get(i).getObjectId();
+						}
+						if (mTwoPane) {
+							// In two-pane mode, show the detail view in this activity by
+							// adding or replacing the detail fragment using a
+							// fragment transaction.
+							Bundle arguments = new Bundle();
+							arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
+							arguments.putString(EXTRA_COURSE_ID, courseID);
+							CourseDetailFragment fragment = new CourseDetailFragment();
+							fragment.setArguments(arguments);
+							getSupportFragmentManager().beginTransaction()
+							.replace(R.id.course_detail_container, fragment).commit();
+
+						} else {
+							// In single-pane mode, simply start the detail activity
+							// for the selected item ID.
+							startTheIntent(id);
+						}
+					} else {
+						Log.d("score", "Error: " + e.getMessage());
+					}
+				}
+			});	
+		}
 	}
-	
+
 	public void startTheIntent(String id) {
 		Intent detailIntent = new Intent(this, CourseDetailActivity.class);
 		detailIntent.putExtra(EXTRA_COURSE_ID, courseID);

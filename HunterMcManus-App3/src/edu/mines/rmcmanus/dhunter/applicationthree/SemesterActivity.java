@@ -47,15 +47,15 @@ public class SemesterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_semester);
 		// Show the Up button in the action bar.
-        setupActionBar();
-		
+		setupActionBar();
+
 		//Gets weather the user signed in as a guest or not
 		isGuest = getIntent().getBooleanExtra(MainActivity.EXTRA_GUEST, false);
-		
+
 		intent = new Intent(this, CourseListActivity.class);
 		getList();
 	}
-	
+
 	/**
 	 * This function starts the next activity based on which semester was clicked on in 
 	 * the list
@@ -64,13 +64,13 @@ public class SemesterActivity extends Activity {
 		intent.putExtra(EXTRA_SEMESTER_ID, semesterID);
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		getList();
 	}
-	
+
 	public void getList() {
 		pbl = (LinearLayout) findViewById(R.id.progressView);
 		pbl.setVisibility(View.VISIBLE);
@@ -80,43 +80,49 @@ public class SemesterActivity extends Activity {
 			@Override
 			public void done(List<ParseObject> semesterList, ParseException e) {
 				if (e == null) {
-		            Log.d("score", "Retrieved " + semesterList.size() + " scores");
-		            semesterArray = new String[semesterList.size()];
-		            semesterArrayList = new ArrayList<Semester>();
-		            String semesterType;
-		            String semesterYear;
-		            String objectId;
-		            for (int i = 0; i < semesterList.size(); ++i) {
-		            	semesterType = semesterList.get(i).getString("semester_type");
-		            	semesterYear = semesterList.get(i).getString("semester_year");
-		            	objectId = semesterList.get(i).getObjectId();
-		            	semesterArrayList.add(new Semester(semesterType, semesterYear, objectId));
-		            	semesterArray[i] = semesterType + " " + semesterYear;
-		            }
-		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_list, semesterArray);
-		            semesterListView = (ListView) findViewById(R.id.semesterlist);
-		    		semesterListView.setAdapter(arrayAdapter);
-		    		semesterListView.setOnItemClickListener(new OnItemClickListener() {
-		    			@Override
-		    			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		    				semesterID = semesterArrayList.get(position).objectId;
-		    				pickCourse();
-		    			}
-		    		});
-		    		pbl.setVisibility(View.INVISIBLE);
+					Log.d("score", "Retrieved " + semesterList.size() + " scores");
+					semesterArray = new String[semesterList.size()];
+					semesterArrayList = new ArrayList<Semester>();
+					String semesterType;
+					String semesterYear;
+					String objectId;
+					if (semesterList.size() == 0) {
+						semesterArray = new String[1];
+						semesterArray[0] = getString(R.string.noSemester);
+					}
+					for (int i = 0; i < semesterList.size(); ++i) {
+						semesterType = semesterList.get(i).getString("semester_type");
+						semesterYear = semesterList.get(i).getString("semester_year");
+						objectId = semesterList.get(i).getObjectId();
+						semesterArrayList.add(new Semester(semesterType, semesterYear, objectId));
+						semesterArray[i] = semesterType + " " + semesterYear;
+					}
+					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_list, semesterArray);
+					semesterListView = (ListView) findViewById(R.id.semesterlist);
+					semesterListView.setAdapter(arrayAdapter);
+					if (semesterList.size() != 0) {
+						semesterListView.setOnItemClickListener(new OnItemClickListener() {
+							@Override
+							public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+								semesterID = semesterArrayList.get(position).objectId;
+								pickCourse();
+							}
+						});
+					}
+					pbl.setVisibility(View.INVISIBLE);
 				} else {
-		            Log.d("score", "Error: " + e.getMessage());
-		        }
+					Log.d("score", "Error: " + e.getMessage());
+				}
 			}
 		});	
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    getActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-    }
+	private void setupActionBar() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,7 +175,7 @@ public class SemesterActivity extends Activity {
 			}						
 			return true;
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 }

@@ -102,5 +102,7 @@
     <string name="appendPriority">Priority:</string>
     <string name="appendPointValue">Point Value:</string>
     <string name="appendType">Type:</string>
+    <string name="noSemester">(No semesters to show, go add some!)</string>
+    <string name="noCourse">(No courses to show, go add some!)</string>
 
 </resources>

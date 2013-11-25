@@ -42,6 +42,7 @@ public class CourseListFragment extends ListFragment {
 //	public ArrayList<Semester> courseArrayList;
 	public ListView courseListView;
 	public String semesterID;
+	public boolean noCourses = false;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -69,7 +70,7 @@ public class CourseListFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id, String courseName);
+		public void onItemSelected(String id, String courseName, boolean hasCourses);
 	}
 
 	/**
@@ -78,7 +79,7 @@ public class CourseListFragment extends ListFragment {
 	 */
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id, String courseName) {
+		public void onItemSelected(String id, String courseName, boolean hasCourses) {
 		}
 	};
 
@@ -117,6 +118,11 @@ public class CourseListFragment extends ListFragment {
 		            Log.d("score", "Retrieved " + courseList.size() + " courses");
 		            courseArray = new String[courseList.size()];
 		            String courseName;
+		            if (courseList.size() == 0) {
+		            	courseArray = new String[1];
+		            	courseArray[0] = getString(R.string.noCourse);
+		            	noCourses = true;
+		            }
 		            for (int i = 0; i < courseList.size(); ++i) {
 		            	courseName = courseList.get(i).getString("name");
 		            	courseArray[i] = courseName;
@@ -171,7 +177,7 @@ public class CourseListFragment extends ListFragment {
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		String courseName = listView.getItemAtPosition(position).toString();
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id, courseName);
+		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id, courseName, noCourses);
 	}
 
 	@Override
