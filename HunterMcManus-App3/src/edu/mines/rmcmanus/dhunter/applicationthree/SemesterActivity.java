@@ -11,6 +11,7 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,9 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -106,6 +110,24 @@ public class SemesterActivity extends Activity {
 							public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 								semesterID = semesterArrayList.get(position).objectId;
 								pickCourse();
+							}
+						});
+						semesterListView.setLongClickable(true);
+						semesterListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+							@Override
+							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+								semesterID = semesterArrayList.get(position).objectId;
+								ParseObject.createWithoutData("Semester", semesterID).deleteInBackground(new DeleteCallback() {
+									
+									@Override
+									public void done(ParseException e) {
+										if (e == null) {
+											getList();
+										}
+									}
+								});
+								return true;
 							}
 						});
 					}
