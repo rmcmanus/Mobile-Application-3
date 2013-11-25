@@ -27,7 +27,8 @@ import android.view.MenuItem;
 public class CourseDetailActivity extends FragmentActivity {
 	
 	public final static String EXTRA_COURSE_ID = "edu.mines.rmcmanus.dhunter.applicationthree.COURSEADDID";
-	public String courseID;
+	public final static String EXTRA_SEMESTER_ID = "edu.mines.rmcmanus.dhunter.applicationthree.RESUMESEMESTERID";
+	public String courseID, semesterID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +51,17 @@ public class CourseDetailActivity extends FragmentActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(CourseDetailFragment.ARG_ITEM_ID));
+//			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(CourseDetailFragment.ARG_ITEM_ID));
 			arguments.putString(CourseListActivity.EXTRA_COURSE_ID, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID));
 			courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
+			semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
 			CourseDetailFragment fragment = new CourseDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
 		}
 		
 		courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
+		semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
 		
 	}
 	
@@ -81,8 +84,9 @@ public class CourseDetailActivity extends FragmentActivity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpTo(this, new Intent(this,
-					CourseListActivity.class));
+			Intent back = new Intent(this, CourseListActivity.class);
+			back.putExtra(EXTRA_SEMESTER_ID, semesterID);
+			NavUtils.navigateUpTo(this, back);
 			return true;
 		case R.id.addAssignmentContext:
 			Intent intent = new Intent(this, AddAssignmentActivity.class);

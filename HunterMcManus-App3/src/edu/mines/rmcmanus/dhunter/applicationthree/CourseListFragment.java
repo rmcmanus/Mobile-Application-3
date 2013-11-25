@@ -70,7 +70,7 @@ public class CourseListFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id, String courseName, boolean hasCourses);
+		public void onItemSelected(String courseName, boolean hasCourses, String semesterID);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class CourseListFragment extends ListFragment {
 	 */
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id, String courseName, boolean hasCourses) {
+		public void onItemSelected(String courseName, boolean hasCourses, String semesterID) {
 		}
 	};
 
@@ -108,6 +108,9 @@ public class CourseListFragment extends ListFragment {
 	}
 	
 	public void getList() {
+		if (semesterID == null) {
+			semesterID = getActivity().getIntent().getStringExtra(CourseDetailActivity.EXTRA_SEMESTER_ID);
+		}
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
 		query.whereEqualTo("semester", semesterID);
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
@@ -177,7 +180,7 @@ public class CourseListFragment extends ListFragment {
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		String courseName = listView.getItemAtPosition(position).toString();
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id, courseName, noCourses);
+		mCallbacks.onItemSelected(courseName, noCourses, semesterID);
 	}
 
 	@Override

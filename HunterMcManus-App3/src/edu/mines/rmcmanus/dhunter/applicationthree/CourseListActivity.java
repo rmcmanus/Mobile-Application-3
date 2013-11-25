@@ -134,8 +134,9 @@ CourseListFragment.Callbacks {
 	 * the item with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(final String id, String courseName, boolean hasCourses) {
-		Log.d("Test", id);
+	public void onItemSelected(String courseName, boolean hasCourses, String semesterID) {
+//		Log.d("Test", id);
+		this.semesterID = semesterID;
 		if (!hasCourses) {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
@@ -155,7 +156,7 @@ CourseListFragment.Callbacks {
 							// adding or replacing the detail fragment using a
 							// fragment transaction.
 							Bundle arguments = new Bundle();
-							arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
+//							arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
 							arguments.putString(EXTRA_COURSE_ID, courseID);
 							CourseDetailFragment fragment = new CourseDetailFragment();
 							fragment.setArguments(arguments);
@@ -165,7 +166,7 @@ CourseListFragment.Callbacks {
 						} else {
 							// In single-pane mode, simply start the detail activity
 							// for the selected item ID.
-							startTheIntent(id);
+							startTheIntent();
 						}
 					} else {
 						Log.d("score", "Error: " + e.getMessage());
@@ -175,10 +176,11 @@ CourseListFragment.Callbacks {
 		}
 	}
 
-	public void startTheIntent(String id) {
+	public void startTheIntent() {
 		Intent detailIntent = new Intent(this, CourseDetailActivity.class);
 		detailIntent.putExtra(EXTRA_COURSE_ID, courseID);
-		detailIntent.putExtra(CourseDetailFragment.ARG_ITEM_ID, id);
+		detailIntent.putExtra(EXTRA_SEMESTER_ID, semesterID);
+//		detailIntent.putExtra(CourseDetailFragment.ARG_ITEM_ID, id);
 		startActivity(detailIntent);
 	}
 }
