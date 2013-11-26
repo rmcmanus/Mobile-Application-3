@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 
 public class AddCourseActivity extends Activity {
 

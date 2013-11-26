@@ -14,6 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight=".5"
+        android:background="#000000"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -23,9 +24,10 @@
 
             <TextView
                 android:id="@+id/nameLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".10"
+                android:layout_weight=".30"
+                android:textColor="#FFFFFF"
                 android:text="@string/name" />
 
             <EditText
@@ -33,7 +35,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_weight=".90"
+                android:layout_weight=".70"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
                 android:hint="@string/name" />
         </LinearLayout>
 
@@ -44,9 +48,10 @@
 
             <TextView
                 android:id="@+id/typeLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".10"
+                android:layout_weight=".30"
+                android:textColor="#FFFFFF"
                 android:text="@string/type" />
 
             <Spinner
@@ -54,7 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_weight=".90" />
+                android:layout_weight=".70" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,9 +69,10 @@
 
             <TextView
                 android:id="@+id/priorityLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".10"
+                android:layout_weight=".30"
+                android:textColor="#FFFFFF"
                 android:text="@string/priority" />
 
             <Spinner
@@ -74,7 +80,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_weight=".90" />
+                android:textColor="#FFFFFF"
+                android:layout_weight=".70" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,9 +91,10 @@
 
             <TextView
                 android:id="@+id/pointLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".10"
+                android:layout_weight=".30"
+                android:textColor="#FFFFFF"
                 android:text="@string/pointvalue" />
 
             <EditText
@@ -94,7 +102,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_weight=".90"
+                android:layout_weight=".70"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
                 android:hint="@string/pointvalue" />
         </LinearLayout>
         <Button
@@ -111,6 +121,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight=".5"
+        android:background="#EEEEE0"
         android:orientation="vertical" >
 
         <TextView

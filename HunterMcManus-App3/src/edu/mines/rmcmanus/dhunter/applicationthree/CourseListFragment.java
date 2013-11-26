@@ -143,44 +143,48 @@ public class CourseListFragment extends ListFragment {
 						courseArrayList.add(new Course(courseName, objectID));
 						courseArray[i] = courseName;
 					}
+					getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+					getListView().setSelector(android.R.color.holo_blue_light);
 					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
 					setListAdapter(arrayAdapter);
-					getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+					if (courseList.size() > 0) {
+						getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
-						@Override
-						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-							String courseID = courseArrayList.get(position).objectID;
-							Log.d("Object ID", courseID);
-							deleteIndex = position;
-							deleteWarning.show();
-							deleteWarning.setOnDismissListener(new OnDismissListener() {
-								@Override
-								public void onDismiss(DialogInterface dialog) {
-									if (deleteWarning.proceed) {
-										coursesList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
+							@Override
+							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+								String courseID = courseArrayList.get(position).objectID;
+								Log.d("Object ID", courseID);
+								deleteIndex = position;
+								deleteWarning.show();
+								deleteWarning.setOnDismissListener(new OnDismissListener() {
+									@Override
+									public void onDismiss(DialogInterface dialog) {
+										if (deleteWarning.proceed) {
+											coursesList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
 
-											@Override
-											public void done(ParseException e) {
-												if (e == null) {
-													getList();
+												@Override
+												public void done(ParseException e) {
+													if (e == null) {
+														getList();
+													}
 												}
-											}
-										});			
+											});			
+										}
 									}
-								}
-							});
-							//							ParseObject.createWithoutData("Course", courseID).deleteInBackground(new DeleteCallback() {
-							//								
-							//								@Override
-							//								public void done(ParseException e) {
-							//									if (e == null) {
-							//										getList();
-							//									}
-							//								}
-							//							});
-							return true;
-						}
-					});
+								});
+								//							ParseObject.createWithoutData("Course", courseID).deleteInBackground(new DeleteCallback() {
+								//								
+								//								@Override
+								//								public void done(ParseException e) {
+								//									if (e == null) {
+								//										getList();
+								//									}
+								//								}
+								//							});
+								return true;
+							}
+						});
+					}
 				} else {
 					Log.d("score", "Error: " + e.getMessage());
 					Log.d("score", e.getCode() + "");

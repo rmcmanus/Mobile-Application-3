@@ -6,6 +6,8 @@
     <EditText android:id="@+id/ItemCaption"
         android:layout_height="wrap_content" android:layout_width="fill_parent"
         android:layout_marginLeft="2dip" android:singleLine="true"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:hint="@string/assignmentcategory">
     </EditText>
  
