@@ -143,10 +143,10 @@ public class CourseListFragment extends ListFragment {
 						courseArrayList.add(new Course(courseName, objectID));
 						courseArray[i] = courseName;
 					}
-					getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-					getListView().setSelector(android.R.color.holo_blue_light);
+//					getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
 					setListAdapter(arrayAdapter);
+//					getListView().setSelector(android.R.color.black);
 					if (courseList.size() > 0) {
 						getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
