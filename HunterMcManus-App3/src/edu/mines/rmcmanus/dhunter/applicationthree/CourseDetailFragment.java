@@ -20,8 +20,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.AdapterView.OnItemLongClickListener;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -38,9 +41,9 @@ public class CourseDetailFragment extends Fragment {
 	ExpandableListView expListView;
 	List<String> listDataHeader;
 	HashMap<String, List<String>> listDataChild;
-
+	
+	ArrayList<String> assignmentObjects;
 	String courseID;
-
 	ArrayList<String> assignmentList;
 	/**
 	 * The fragment argument representing the item ID that this fragment
@@ -89,6 +92,8 @@ public class CourseDetailFragment extends Fragment {
 					listDataChild = new HashMap<String, List<String>>();
 					listDataHeader = new ArrayList<String>();
 					List<String> assignmentContents;
+					
+					assignmentObjects = new ArrayList<String>();
 					for (int i = 0; i < assignmentList.size(); ++i) {
 						assignmentContents = new ArrayList<String>();
 						listDataHeader.add(assignmentList.get(i).getString("assignmentName"));
@@ -96,11 +101,31 @@ public class CourseDetailFragment extends Fragment {
 						assignmentContents.add(getString(R.string.appendPointValue) + " " + assignmentList.get(i).getString("pointValue"));
 						assignmentContents.add(getString(R.string.appendPriority) + " " + assignmentList.get(i).getString("assignmentPriority"));
 						assignmentContents.add(getString(R.string.appendType) + " " + assignmentList.get(i).getString("assignmentType"));
+						
+						assignmentObjects.add(assignmentList.get(i).getObjectId());
 						listDataChild.put(listDataHeader.get(i), assignmentContents);
 					}
 
 					listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
 					expListView.setAdapter(listAdapter);
+					expListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+							String assignmentID = assignmentObjects.get(position);
+							Log.d("Object ID", courseID);
+							ParseObject.createWithoutData("Assignments", assignmentID).deleteInBackground(new DeleteCallback() {
+								
+								@Override
+								public void done(ParseException e) {
+									if (e == null) {
+										getAssignments();
+									}
+								}
+							});
+							return true;
+						}
+					});
 				} else {
 					Log.d("score", "Error: " + e.getMessage());
 				}

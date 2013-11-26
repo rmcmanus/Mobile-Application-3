@@ -9,6 +9,7 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -16,9 +17,12 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemLongClickListener;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -40,6 +44,7 @@ public class CourseListFragment extends ListFragment {
 	
 	public String[] courseArray;
 //	public ArrayList<Semester> courseArrayList;
+	public ArrayList<Course> courseArrayList;
 	public ListView courseListView;
 	public String semesterID;
 	public boolean noCourses = false;
@@ -120,7 +125,8 @@ public class CourseListFragment extends ListFragment {
 				if (e == null) {
 		            Log.d("score", "Retrieved " + courseList.size() + " courses");
 		            courseArray = new String[courseList.size()];
-		            String courseName;
+	            	courseArrayList = new ArrayList<Course>();
+		            String courseName, objectID;
 		            if (courseList.size() == 0) {
 		            	courseArray = new String[1];
 		            	courseArray[0] = getString(R.string.noCourse);
@@ -128,10 +134,30 @@ public class CourseListFragment extends ListFragment {
 		            }
 		            for (int i = 0; i < courseList.size(); ++i) {
 		            	courseName = courseList.get(i).getString("name");
+		            	objectID = courseList.get(i).getObjectId();
+		            	courseArrayList.add(new Course(courseName, objectID));
 		            	courseArray[i] = courseName;
 		            }
 		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
 		    		setListAdapter(arrayAdapter);
+		    		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+							String courseID = courseArrayList.get(position).objectID;
+							Log.d("Object ID", courseID);
+							ParseObject.createWithoutData("Course", courseID).deleteInBackground(new DeleteCallback() {
+								
+								@Override
+								public void done(ParseException e) {
+									if (e == null) {
+										getList();
+									}
+								}
+							});
+							return true;
+						}
+					});
 				} else {
 		            Log.d("score", "Error: " + e.getMessage());
 		        }
