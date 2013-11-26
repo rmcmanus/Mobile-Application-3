@@ -101,6 +101,7 @@ public class SemesterActivity extends Activity {
 					Log.d("score", "Retrieved " + semesterList.size() + " scores");
 					semestersList = semesterList;
 					semesterArray = new String[semesterList.size()];
+					semesterArrayList = new ArrayList<Semester>();
 					String semesterType;
 					String semesterYear;
 					String objectId;

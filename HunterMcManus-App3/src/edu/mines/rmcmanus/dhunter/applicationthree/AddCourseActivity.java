@@ -32,6 +32,7 @@ public class AddCourseActivity extends Activity {
 	public String semesterID;
 	private ListView myList;
 	private MyAdapter myAdapter;
+	public boolean save = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +110,16 @@ public class AddCourseActivity extends Activity {
 								category.put("course", courseID);
 								category.put("category_name", myAdapter.getText(i));
 								category.put("user", ParseUser.getCurrentUser());
+//								if (i == (myAdapter.getCount() - 1)) {
+//									save = true;
+//								}
 								category.saveInBackground(new SaveCallback() {
 									@Override
 									public void done(ParseException e) {
 										//Finishes the activity once the information is saved
-										finish();
+//										if (save) {
+											finish();
+//										}
 									}
 								});
 							}
