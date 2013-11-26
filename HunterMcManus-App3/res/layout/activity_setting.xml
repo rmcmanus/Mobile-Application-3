@@ -69,7 +69,8 @@
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:layout_gravity="center|bottom"
-            android:text="@string/logout" />
+            android:text="@string/logout"
+            android:onClick="logout" />
     </LinearLayout>
 
     <LinearLayout

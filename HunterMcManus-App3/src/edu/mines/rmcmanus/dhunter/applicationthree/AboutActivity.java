@@ -1,8 +1,7 @@
 /**
  * Description: This class is used to show a screen about our application. For this submission
  * we just have a picture that tells the purpose of the application and who made it.
- * This might be improved upon on the next submission depending on if we get a better idea
- * on what to put in it
+ * This screen isn't very fancy but we didn't know what to put in it's place
  *
  * @author Ryan McManus, David Hunter
  */

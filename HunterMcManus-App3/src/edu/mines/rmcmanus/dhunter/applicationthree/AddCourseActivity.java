@@ -1,8 +1,10 @@
 /**
- * Description: This activity is used to add a new Course to a semester.  The functionality
- * for this submission has not yet been implemented.  In the next submission the course
- * will be inserted into the database.
- *
+ * Description: This activity is used to add a new Course to a semester.  This activity
+ * gets the id of the semester from the Semester activity. The activity checks to see that all the
+ * proper fields were filled out and updates the database.  This class also implements a custom
+ * adapter that was mentioned in the Main Activity.  This adapter was changed to fit our needs.
+ * This adapter was needed so that the user can add as many category types as they need.
+ * 
  * @author Ryan McManus, David Hunter
  */
 
@@ -44,12 +46,26 @@ public class AddCourseActivity extends Activity {
 
 	}
 
+	/**
+	 * This function is called when the user presses "Add More" on the activity.
+	 * This calls a function of the custom adapter which adds another view to the
+	 * list view of edit text fields.
+	 * 
+	 * @param v The button that was clicked on the activity
+	 */
 	public void addAnotherView(View v) {
-		myAdapter.addItem("");
+		myAdapter.addItem();
 	}
 
+	/**
+	 * This function is called when the user presses the submit button on the activity.
+	 * It checks to make sure that the user put in a name for the course, and put in at
+	 * least one category for the assignments. They don't have to enter a location or a
+	 * time.
+	 * 
+	 * @param v The view clicked on the activity
+	 */
 	public void addCourse(View v) {
-		//		Toast.makeText(this, semesterID, Toast.LENGTH_SHORT).show();
 		EditText courseName = (EditText) findViewById(R.id.addCourseName);
 		String location;
 		String time;
@@ -60,6 +76,8 @@ public class AddCourseActivity extends Activity {
 			location = ((EditText) findViewById(R.id.courseTime)).getText().toString();
 			time = ((EditText) findViewById(R.id.courseLocation)).getText().toString();
 			int countOfEmpty = 0;
+			//Iterates through the elements in the adapter to see that they filled out at least one
+			//of the boxes
 			for (int i = 0; i < myAdapter.getCount(); ++i) {
 				if (!myAdapter.getText(i).equals("")) {
 					countOfEmpty++;
@@ -71,6 +89,7 @@ public class AddCourseActivity extends Activity {
 			}
 			else {
 				
+				//Inserts into the Course column based on the information the user entered
 				final ParseObject course = new ParseObject("Course");
 				course.put("name", courseName.getText().toString());
 				course.put("semester", semesterID);
@@ -83,7 +102,9 @@ public class AddCourseActivity extends Activity {
 					public void done(ParseException e) {
 						String courseID = course.getObjectId();
 						for (int i = 0; i < myAdapter.getCount(); ++i) {
+							//Only grabs the information that isn't empty
 							if (!myAdapter.getText(i).equals("")) {
+								//Inserts into the categories based on the categories
 								ParseObject category = new ParseObject("Category");
 								category.put("course", courseID);
 								category.put("category_name", myAdapter.getText(i));
@@ -91,6 +112,7 @@ public class AddCourseActivity extends Activity {
 								category.saveInBackground(new SaveCallback() {
 									@Override
 									public void done(ParseException e) {
+										//Finishes the activity once the information is saved
 										finish();
 									}
 								});
@@ -101,7 +123,15 @@ public class AddCourseActivity extends Activity {
 			}
 		}
 	}
-
+	
+	/**
+	 * This is a custom adapter that was found online and adapted. This adapter uses edit
+	 * text boxes for a list view instead of the normal text view.  This allows the code
+	 * to not be so rigid. 
+	 * 
+	 * @author http://vikaskanani.wordpress.com/2011/07/27/android-focusable-edittext-inside-listview/
+	 * Adapted by: David Hunter
+	 */
 	public class MyAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
 		public ArrayList<ListItem> myItems = new ArrayList<ListItem>();
@@ -116,7 +146,12 @@ public class AddCourseActivity extends Activity {
 			notifyDataSetChanged();
 		}
 
-		public void addItem(String test) {
+		/**
+		 * This function was added by me.  I added this so that when the user presses
+		 * the button to add more views this would be added to the adapter.
+		 * 
+		 */
+		public void addItem() {
 			ListItem listItem = new ListItem();
 			listItem.caption = "";
 			myItems.add(listItem);
@@ -127,6 +162,14 @@ public class AddCourseActivity extends Activity {
 			return myItems.size();
 		}
 
+		/**
+		 * I also added this function so that I could grab the text for a view at a position.
+		 * I did this so I could iterate through the size of the adapter and grab each box in
+		 * the adapter to get the text.
+		 * 
+		 * @param position The position of the view in the list
+		 * @return The text contained at that position
+		 */
 		public String getText(int position) {
 			return myItems.get(position).caption;
 		}

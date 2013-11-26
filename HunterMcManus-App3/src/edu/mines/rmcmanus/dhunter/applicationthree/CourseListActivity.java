@@ -1,8 +1,6 @@
 /**
  * Description: This activity is used to show all of the saved courses relating
- * to the current users selected semester. The functionality for this submission has not 
- * yet been implemented. The list is filled with dummy data.  This is the activity on
- * a hand held
+ * to the current users selected semester.
  *
  * @author Ryan McManus, David Hunter
  */
@@ -75,8 +73,6 @@ CourseListFragment.Callbacks {
 		if (!mTwoPane) {
 			this.getWindow().setBackgroundDrawableResource(R.drawable.backtoschool);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
 	}
 
 	@Override
@@ -133,9 +129,14 @@ CourseListFragment.Callbacks {
 	 * Callback method from {@link CourseListFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
 	 */
+	/**
+	 * This function was modified so that it can take the name of the course that was selected,
+	 * and the semester id.  The boolean for hasCourses is to make sure that the user doesn't try
+	 * to select the item from the list that is there for visual appeal.
+	 * 
+	 */
 	@Override
 	public void onItemSelected(String courseName, boolean hasCourses, String semesterID) {
-//		Log.d("Test", id);
 		this.semesterID = semesterID;
 		if (!hasCourses) {
 

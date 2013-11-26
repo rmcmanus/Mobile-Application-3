@@ -1,8 +1,6 @@
 /**
  * Description: This activity is used to show all of the saved assignments relating
- * to the current users selected course. The functionality for this submission has not 
- * yet been implemented. The list is filled with dummy data.  This is the right fragment on
- * a hand held
+ * to the current users selected course. 
  *
  * @author Ryan McManus, David Hunter
  */
@@ -12,10 +10,8 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
-
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -88,6 +83,12 @@ public class CourseDetailFragment extends Fragment {
 		getAssignments();
 	}
 
+	/**
+	 * This function is called on create and on resume.  It is used to query the database
+	 * based on the course that was selected in the CourseListFragment or activity.  Then
+	 * the expandable list view is updated based on the details of the assignment.
+	 * 
+	 */
 	public void getAssignments() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignments");
 		query.whereEqualTo("course", courseID);
@@ -103,6 +104,8 @@ public class CourseDetailFragment extends Fragment {
 					listDataHeader = new ArrayList<String>();
 					List<String> assignmentContents;
 					assignmentObjects = new ArrayList<String>();
+					//Loops through the list of results and pulls each of the fields for the assignments and sets
+					//it in the expandable list view
 					for (int i = 0; i < assignmentList.size(); ++i) {
 						assignmentContents = new ArrayList<String>();
 						listDataHeader.add(assignmentList.get(i).getString("assignmentName"));
@@ -119,6 +122,9 @@ public class CourseDetailFragment extends Fragment {
 					expListView.setAdapter(listAdapter);
 					expListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+						//This function is called to delete an item from the list view.  A warning is first shown
+						//to ask the user if they really want to delete the item.  If they want to delete it then
+						//it is removed from the database and the list is reloaded
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 							Log.d("Object ID", courseID);
@@ -140,15 +146,6 @@ public class CourseDetailFragment extends Fragment {
 									}
 								}
 							});
-//							ParseObject.createWithoutData("Assignments", assignmentID).deleteInBackground(new DeleteCallback() {
-//								
-//								@Override
-//								public void done(ParseException e) {
-//									if (e == null) {
-//										getAssignments();
-//									}
-//								}
-//							});
 							return true;
 						}
 					});
@@ -160,10 +157,5 @@ public class CourseDetailFragment extends Fragment {
 				}
 			}
 		});	
-	}
-
-	public void showAssignment() {
-		Intent intent = new Intent(getActivity(), ShowAssignmentActivity.class);
-		startActivity(intent);
 	}
 }

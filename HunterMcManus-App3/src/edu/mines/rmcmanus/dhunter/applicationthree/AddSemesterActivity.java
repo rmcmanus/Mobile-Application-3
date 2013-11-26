@@ -1,7 +1,7 @@
 /**
- * Description: This activity is used to add a new Semester.  The functionality
- * for this submission has not yet been implemented.  In the next submission the semester
- * will be inserted into the database.
+ * Description: This activity is used to add a new Semester.  This activity
+ * gets the id of the user from the Parse API.  The activity checks to see that all the
+ * proper fields were filled out and updates the database.
  *
  * @author Ryan McManus, David Hunter
  */
@@ -28,13 +28,24 @@ public class AddSemesterActivity extends Activity {
 		setContentView(R.layout.activity_add_semester);
 	}
 	
+	/**
+	 * This function is called when the submit button is pressed on the Activity.
+	 * This function checks to make sure that all the proper fields were filled out,
+	 * and if they were then a string is either pulled based on the radio button selected,
+	 * or the other field if the user picked that.
+	 * 
+	 * @param v The button that was pressed on the activity
+	 */
 	public void addSemester(View v) {
 		EditText otherField = (EditText) findViewById(R.id.othersemester);
 		EditText yearField = (EditText) findViewById(R.id.semesteryear);
+		//If the user didn't put anything in for the other field it defaults to the radio buttons
 		if (otherField.getText().toString().equals("")) {
+			//Checks to see if the year has text
 			if (yearField.getText().toString().equals("")) {
 				Toast.makeText(this, getString(R.string.yearError), Toast.LENGTH_SHORT).show();
 			} else {
+				//Gets the value from the radio button and adds it to the proper column in the database
 				RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroup1);
 				int selected = rg.getCheckedRadioButtonId();
 				RadioButton selectedButton = (RadioButton) findViewById(selected);
@@ -48,6 +59,7 @@ public class AddSemesterActivity extends Activity {
 				semester.saveInBackground(new SaveCallback() {
 					@Override
 					public void done(ParseException e) {
+						//Finishes the activity once the data is saved
 						finish();
 					}
 				});
@@ -65,6 +77,7 @@ public class AddSemesterActivity extends Activity {
 					
 					@Override
 					public void done(ParseException e) {
+						//Finishes the activity once the data is saved
 						finish();
 					}
 				});

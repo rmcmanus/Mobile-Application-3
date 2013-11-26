@@ -1,7 +1,8 @@
 /**
  * Description: This activity is used to some steps to take to get started with our
- * application.  This screen right now is just a picture with steps on it. This may
- * be improved upon depending on if we can think of a nicer way to do it.
+ * application.  This screen right now is just a picture with steps on it. This 
+ * activity isn't very pretty, but we think that it provides basic help in order to
+ * use our app
  *
  * @author Ryan McManus, David Hunter
  */

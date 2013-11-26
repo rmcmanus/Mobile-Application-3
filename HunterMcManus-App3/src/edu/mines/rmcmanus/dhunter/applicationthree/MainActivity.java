@@ -1,6 +1,7 @@
 // This application was tested on a Nexus 4 and Nexus 7
 // This application was tested on API 18 max and API 11 min
 // Our application was designed to run in landscape mode only
+// Our app has to have connection to the Internet to work properly. We tried to account for if the connection times out though
 /**
  * Description: This class is used to either sign up for our application, or to login to our 
  * application using the Parse API.
@@ -12,9 +13,14 @@
  * and the code from class on how to implement fragments, adapted for our needs. (Author Randy Bower).
  * Fragments were generated using Eclipse built in Activity generator.
  * 
- * This site :http://vikaskanani.wordpress.com/2011/07/27/android-focusable-edittext-inside-listview/
+ * This site: http://vikaskanani.wordpress.com/2011/07/27/android-focusable-edittext-inside-listview/
  * was used to figure out the custom list view with edit text boxes on the add course screen
- *
+ * 
+ * This site: http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
+ * was used for an expandable list adapter that is used in the CourseDetailFragment
+ * 
+ * This site: https://parse.com/docs/android_guide was used for help with using the Parse API.
+ * 
  * @author Ryan McManus, David Hunter
  */
 

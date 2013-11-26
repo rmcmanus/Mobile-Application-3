@@ -18,7 +18,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
+import android.content.Intent;
 
 public class SettingActivity extends Activity {
 
@@ -77,7 +77,13 @@ public class SettingActivity extends Activity {
 											if (e == null) {
 												Toast.makeText(getBaseContext(), getString(R.string.userUpdated), Toast.LENGTH_SHORT).show();
 											} else {
-												Log.d("update", "Error: " + e.getMessage());
+												Log.d("update", "Error: " + e.getMessage() + " " + e.getCode());
+												if (e.getCode() == ParseException.INVALID_EMAIL_ADDRESS) {
+													Toast.makeText(getBaseContext(), getString(R.string.invaidemail), Toast.LENGTH_SHORT).show();
+												}
+												if (e.getCode() == ParseException.EMAIL_TAKEN || e.getCode() == ParseException.USERNAME_TAKEN) {
+													Toast.makeText(getBaseContext(), getString(R.string.duplicateemail), Toast.LENGTH_SHORT).show();
+												}
 											}
 										}
 									});
@@ -94,6 +100,14 @@ public class SettingActivity extends Activity {
 				}
 			}
 		});
+	}
+	
+	public void logout(View v) {
+		if (ParseUser.getCurrentUser() != null) {
+			ParseUser.logOut();
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}
 	}
 
 	//	@Override

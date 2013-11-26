@@ -43,7 +43,7 @@ import com.parse.ParseUser;
 public class CourseListFragment extends ListFragment {
 
 	public String[] courseArray;
-	//	public ArrayList<Semester> courseArrayList;
+//	public ArrayList<Semester> courseArrayList;
 	public ArrayList<Course> courseArrayList;
 	public List<ParseObject> coursesList;
 	public ListView courseListView;
@@ -116,10 +116,17 @@ public class CourseListFragment extends ListFragment {
 		getList();
 	}
 
+	/**
+	 * This function is called on create and on resume.  This function queries the database
+	 * for all the courses related to the selected semester and the current user's id.
+	 * Then an adapter is set based on all of the information that is returned.
+	 * 
+	 */
 	public void getList() {
 		if (semesterID == null) {
 			semesterID = getActivity().getIntent().getStringExtra(CourseDetailActivity.EXTRA_SEMESTER_ID);
 		}
+		//Queries the database for the courses
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
 		query.whereEqualTo("semester", semesterID);
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
@@ -132,6 +139,7 @@ public class CourseListFragment extends ListFragment {
 					courseArrayList = new ArrayList<Course>();
 					coursesList = courseList;
 					String courseName, objectID;
+					//If there were no results returned, then a nice message is added to the list
 					if (courseList.size() == 0) {
 						courseArray = new String[1];
 						courseArray[0] = getString(R.string.noCourse);
@@ -143,11 +151,13 @@ public class CourseListFragment extends ListFragment {
 						courseArrayList.add(new Course(courseName, objectID));
 						courseArray[i] = courseName;
 					}
-//					getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+					//					getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
 					setListAdapter(arrayAdapter);
-//					getListView().setSelector(android.R.color.black);
+					//					getListView().setSelector(android.R.color.black);
 					if (courseList.size() > 0) {
+						//This function is called when a user long presses an item.  It shows a warning asking if the user
+						//really wants to delete the data, and if they do then the data is deleted from the database
 						getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 							@Override

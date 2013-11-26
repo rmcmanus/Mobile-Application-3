@@ -1,8 +1,6 @@
 /**
  * Description: This activity is used to show all of the saved assignments relating
- * to the current users selected course. The functionality for this submission has not 
- * yet been implemented. The list is filled with dummy data.  This is the activity on
- * a hand held
+ * to the current users selected course. 
  *
  * @author Ryan McManus, David Hunter
  */
@@ -84,6 +82,7 @@ public class CourseDetailActivity extends FragmentActivity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
+			//Resets the semesterID if the user uses the UP navigation
 			Intent back = new Intent(this, CourseListActivity.class);
 			back.putExtra(EXTRA_SEMESTER_ID, semesterID);
 			NavUtils.navigateUpTo(this, back);
