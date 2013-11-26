@@ -1,8 +1,6 @@
 /**
- * Description: This activity is used to show all of the saved semester relating
- * to the current user. The functionality for this submission has not 
- * yet been implemented. The list is filled with dummy data.  For the final submission
- * the data will be pulled from the database
+ * Description: This activity is used to show all of the saved semesters relating
+ * to the current user. 
  *
  * @author Ryan McManus, David Hunter
  */
@@ -11,7 +9,6 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -31,7 +28,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -82,11 +78,20 @@ public class SemesterActivity extends Activity {
 		getList();
 	}
 
+	/**
+	 * This function is called on create and on resume.  This function queries the database
+	 * for all of the semesters that are related to the current user. The information is sorted
+	 * based on the year of the semester in ascending order.
+	 *
+	 */
 	public void getList() {
+		//shows the spinning wheel when the data is loading
 		pbl = (LinearLayout) findViewById(R.id.progressView);
 		pbl.setVisibility(View.VISIBLE);
+		//Queries the semester table based on the user id
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Semester");
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
+		//Sorts by the year and then the name.
 		query.orderByAscending("semester_year");
 		query.addAscendingOrder("semester_type");
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -99,10 +104,12 @@ public class SemesterActivity extends Activity {
 					String semesterType;
 					String semesterYear;
 					String objectId;
+					//If there are no results returned then a nice message is added to the list
 					if (semesterList.size() == 0) {
 						semesterArray = new String[1];
 						semesterArray[0] = getString(R.string.noSemester);
 					}
+					//Populates the list adapter based on the information that is queried
 					for (int i = 0; i < semesterList.size(); ++i) {
 						semesterType = semesterList.get(i).getString("semester_type");
 						semesterYear = semesterList.get(i).getString("semester_year");
@@ -123,7 +130,8 @@ public class SemesterActivity extends Activity {
 						});
 						semesterListView.setLongClickable(true);
 						semesterListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
+							//This function is called when a user long presses an item.  It asks the user if they
+							//really want to delete the data. If they do it is deleted from the database.
 							@Override
 							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 								semesterID = semesterArrayList.get(position).objectId;
@@ -145,22 +153,15 @@ public class SemesterActivity extends Activity {
 										}	
 									}
 								});
-//								ParseObject.createWithoutData("Semester", semesterID).deleteInBackground(new DeleteCallback() {
-//									
-//									@Override
-//									public void done(ParseException e) {
-//										if (e == null) {
-//											getList();
-//										}
-//									}
-//								});
 								return true;
 							}
 						});
 					}
+					//Gets rid of the spinning wheel because all the data has been loaded
 					pbl.setVisibility(View.INVISIBLE);
 				} else {
 					Log.d("score", "Error: " + e.getMessage());
+					//Shows an error if there was no internet connection
 					if (e.getCode() == ParseException.CONNECTION_FAILED) {
 						Toast.makeText(getBaseContext(), getString(R.string.connectivityError), Toast.LENGTH_LONG).show();
 					}
