@@ -105,5 +105,6 @@
     <string name="noSemester">(No semesters to show, go add some!)</string>
     <string name="noCourse">(No courses to show, go add some!)</string>
     <string name="deleteWarning">Are you sure you want to delete this? There\'s no going back</string>
+    <string name="connectivityError">Server Timeout. Check your network settings and try again</string>
 
 </resources>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -182,6 +183,10 @@ public class CourseListFragment extends ListFragment {
 					});
 				} else {
 					Log.d("score", "Error: " + e.getMessage());
+					Log.d("score", e.getCode() + "");
+					if (e.getCode() == ParseException.CONNECTION_FAILED) {
+						Toast.makeText(getActivity().getBaseContext(), getString(R.string.connectivityError), Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});	

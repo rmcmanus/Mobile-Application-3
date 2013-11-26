@@ -30,6 +30,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -86,6 +87,8 @@ public class SemesterActivity extends Activity {
 		pbl.setVisibility(View.VISIBLE);
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Semester");
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.orderByAscending("semester_year");
+		query.addAscendingOrder("semester_type");
 		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> semesterList, ParseException e) {
@@ -159,6 +162,9 @@ public class SemesterActivity extends Activity {
 					pbl.setVisibility(View.INVISIBLE);
 				} else {
 					Log.d("score", "Error: " + e.getMessage());
+					if (e.getCode() == ParseException.CONNECTION_FAILED) {
+						Toast.makeText(getBaseContext(), getString(R.string.connectivityError), Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});	

@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.parse.DeleteCallback;
@@ -31,6 +32,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 /**
  * A fragment representing a single Course detail screen. This fragment is
@@ -89,6 +91,8 @@ public class CourseDetailFragment extends Fragment {
 	public void getAssignments() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignments");
 		query.whereEqualTo("course", courseID);
+		query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.orderByAscending("dateDue");
 		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> assignmentList, ParseException e) {
@@ -98,7 +102,6 @@ public class CourseDetailFragment extends Fragment {
 					listDataChild = new HashMap<String, List<String>>();
 					listDataHeader = new ArrayList<String>();
 					List<String> assignmentContents;
-					
 					assignmentObjects = new ArrayList<String>();
 					for (int i = 0; i < assignmentList.size(); ++i) {
 						assignmentContents = new ArrayList<String>();
@@ -118,7 +121,6 @@ public class CourseDetailFragment extends Fragment {
 
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-							String assignmentID = assignmentObjects.get(position);
 							Log.d("Object ID", courseID);
 							deleteIndex = position;
 							deleteWarning.show();
@@ -152,6 +154,9 @@ public class CourseDetailFragment extends Fragment {
 					});
 				} else {
 					Log.d("score", "Error: " + e.getMessage());
+					if (e.getCode() == ParseException.CONNECTION_FAILED) {
+						Toast.makeText(getActivity().getBaseContext(), getString(R.string.connectivityError), Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});	

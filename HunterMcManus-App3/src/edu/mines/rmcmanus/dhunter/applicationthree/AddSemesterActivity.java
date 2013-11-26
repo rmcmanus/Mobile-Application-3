@@ -8,8 +8,10 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -43,8 +45,12 @@ public class AddSemesterActivity extends Activity {
 				semester.put("semester_type", semesterType);
 				semester.put("semester_year", yearField.getText().toString());
 				semester.put("user", ParseUser.getCurrentUser());
-				semester.saveInBackground();
-				finish();
+				semester.saveInBackground(new SaveCallback() {
+					@Override
+					public void done(ParseException e) {
+						finish();
+					}
+				});
 			}
 		}
 		else {
@@ -55,8 +61,13 @@ public class AddSemesterActivity extends Activity {
 				semester.put("semester_type", otherField.getText().toString());
 				semester.put("semester_year", yearField.getText().toString());
 				semester.put("user", ParseUser.getCurrentUser());
-				semester.saveInBackground();
-				finish();
+				semester.saveInBackground(new SaveCallback() {
+					
+					@Override
+					public void done(ParseException e) {
+						finish();
+					}
+				});
 			}
 		}
 	}
