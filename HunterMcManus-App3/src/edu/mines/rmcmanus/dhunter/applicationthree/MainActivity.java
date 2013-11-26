@@ -11,6 +11,9 @@
  * for small examples of how code segments should be implemented (ie. ArrayAdapters for arrays in xml) 
  * and the code from class on how to implement fragments, adapted for our needs. (Author Randy Bower).
  * Fragments were generated using Eclipse built in Activity generator.
+ * 
+ * This site :http://vikaskanani.wordpress.com/2011/07/27/android-focusable-edittext-inside-listview/
+ * was used to figure out the custom list view with edit text boxes on the add course screen
  *
  * @author Ryan McManus, David Hunter
  */

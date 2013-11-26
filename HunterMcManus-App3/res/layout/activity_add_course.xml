@@ -84,80 +84,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:text="@string/submit" 
-            android:onClick="addCourse"/>
-    </LinearLayout>
+            android:onClick="addCourse"
+            android:text="@string/submit" />
 
-    <LinearLayout
-        android:id="@+id/right"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight=".5"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/assignmentCategory1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/assignmentcategory" />
-
-            <EditText
-                android:id="@+id/assignmentWeight1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/weight" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/assignmentCategory2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/assignmentcategory" />
-
-            <EditText
-                android:id="@+id/assignmentWeight2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/weight" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/assignmentCategory3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/assignmentcategory" />
-
-            <EditText
-                android:id="@+id/assignmentWeight3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:hint="@string/weight" />
-        </LinearLayout>
-        
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -169,9 +98,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:text="@string/addmore" />
+                android:text="@string/addmore" 
+                android:onClick="addAnotherView"/>
         </LinearLayout>
-        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/right"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".5"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/MyList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:descendantFocusability="beforeDescendants" >
+        </ListView>
     </LinearLayout>
 
 </LinearLayout>

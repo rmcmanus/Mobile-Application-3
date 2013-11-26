@@ -41,6 +41,7 @@ public class SemesterActivity extends Activity {
 	public boolean isGuest;
 	public LinearLayout pbl;
 	public String[] semesterArray;
+	public List<ParseObject> semestersList;
 	public ArrayList<Semester> semesterArrayList;
 	public ListView semesterListView;
 	public String semesterID;
@@ -85,6 +86,7 @@ public class SemesterActivity extends Activity {
 			public void done(List<ParseObject> semesterList, ParseException e) {
 				if (e == null) {
 					Log.d("score", "Retrieved " + semesterList.size() + " scores");
+					semestersList = semesterList;
 					semesterArray = new String[semesterList.size()];
 					semesterArrayList = new ArrayList<Semester>();
 					String semesterType;
@@ -118,7 +120,7 @@ public class SemesterActivity extends Activity {
 							@Override
 							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 								semesterID = semesterArrayList.get(position).objectId;
-								ParseObject.createWithoutData("Semester", semesterID).deleteInBackground(new DeleteCallback() {
+								semestersList.get(position).deleteInBackground(new DeleteCallback() {
 									
 									@Override
 									public void done(ParseException e) {
@@ -127,6 +129,15 @@ public class SemesterActivity extends Activity {
 										}
 									}
 								});
+//								ParseObject.createWithoutData("Semester", semesterID).deleteInBackground(new DeleteCallback() {
+//									
+//									@Override
+//									public void done(ParseException e) {
+//										if (e == null) {
+//											getList();
+//										}
+//									}
+//								});
 								return true;
 							}
 						});

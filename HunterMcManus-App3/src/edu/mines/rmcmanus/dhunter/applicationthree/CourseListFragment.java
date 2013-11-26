@@ -11,7 +11,6 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -21,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
-
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -29,7 +27,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import edu.mines.rmcmanus.dhunter.applicationthree.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Courses. This fragment also supports
