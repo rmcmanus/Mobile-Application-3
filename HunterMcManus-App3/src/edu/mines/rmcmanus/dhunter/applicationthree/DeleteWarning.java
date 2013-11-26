@@ -1,8 +1,7 @@
 /**
  * Description:  This class defines a custom dialog that will be shown when a user
- * presses the guest button on the main screen.  This dialog has a listener
- * for if the user presses the yes or no button.  If the yes button is pressed then
- * proceed with the intent, otherwise dismiss the dialog.
+ * long presses on a semester, course, or assignment.  This ask the user if they want
+ * to continue with the deletion
  * 
  * @author Ryan McManus, David Hunter
  */
@@ -16,7 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class Warning extends Dialog implements
+public class DeleteWarning extends Dialog implements
 android.view.View.OnClickListener {
 
 	public Activity c;
@@ -24,7 +23,7 @@ android.view.View.OnClickListener {
 	public Button yes, no;
 	public boolean proceed = false;
 
-	public Warning(Activity a) {
+	public DeleteWarning(Activity a) {
 		super(a);
 		this.c = a;
 	}
@@ -33,7 +32,7 @@ android.view.View.OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.guest_warning);
+		setContentView(R.layout.delete_warning);
 		yes = (Button) findViewById(R.id.yeswarning);
 		yes.setOnClickListener(this);
 		no = (Button) findViewById(R.id.nowarning);

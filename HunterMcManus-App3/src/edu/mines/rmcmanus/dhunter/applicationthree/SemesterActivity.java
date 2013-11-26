@@ -14,6 +14,8 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,7 +48,9 @@ public class SemesterActivity extends Activity {
 	public ListView semesterListView;
 	public String semesterID;
 	public final static String EXTRA_SEMESTER_ID = "edu.mines.rmcmanus.dhunter.applicationthree.SEMESTERID";
-
+	public DeleteWarning deleteWarning;
+	public int deleteIndex;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +63,7 @@ public class SemesterActivity extends Activity {
 
 		intent = new Intent(this, CourseListActivity.class);
 		getList();
+		deleteWarning = new DeleteWarning(this);
 	}
 
 	/**
@@ -120,13 +125,22 @@ public class SemesterActivity extends Activity {
 							@Override
 							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 								semesterID = semesterArrayList.get(position).objectId;
-								semestersList.get(position).deleteInBackground(new DeleteCallback() {
+								deleteIndex = position;
+								deleteWarning.show();
+								deleteWarning.setOnDismissListener(new OnDismissListener() {
 									
 									@Override
-									public void done(ParseException e) {
-										if (e == null) {
-											getList();
-										}
+									public void onDismiss(DialogInterface dialog) {
+										if (deleteWarning.proceed) {
+											semestersList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
+												@Override
+												public void done(ParseException e) {
+													if (e == null) {
+														getList();
+													}
+												}
+											});
+										}	
 									}
 								});
 //								ParseObject.createWithoutData("Semester", semesterID).deleteInBackground(new DeleteCallback() {

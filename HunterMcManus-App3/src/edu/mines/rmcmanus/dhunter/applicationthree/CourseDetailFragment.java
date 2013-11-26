@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,14 +39,17 @@ import com.parse.ParseQuery;
  */
 public class CourseDetailFragment extends Fragment {
 
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	public ExpandableListAdapter listAdapter;
+	public ExpandableListView expListView;
+	public List<String> listDataHeader;
+	public HashMap<String, List<String>> listDataChild;
+	public ArrayList<String> assignmentObjects;
+	public String courseID;
+	public ArrayList<String> assignmentList;
+	public List<ParseObject> assignmentsList;
+	public DeleteWarning deleteWarning;
+	public int deleteIndex;
 	
-	ArrayList<String> assignmentObjects;
-	String courseID;
-	ArrayList<String> assignmentList;
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
@@ -62,6 +67,7 @@ public class CourseDetailFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		courseID = getArguments().getString(CourseListActivity.EXTRA_COURSE_ID);
+		deleteWarning = new DeleteWarning(getActivity());
 	}
 
 	@Override
@@ -88,7 +94,7 @@ public class CourseDetailFragment extends Fragment {
 			public void done(List<ParseObject> assignmentList, ParseException e) {
 				if (e == null) {
 					Log.d("score", "Retrieved " + assignmentList.size() + " assignments");
-
+					assignmentsList = assignmentList;
 					listDataChild = new HashMap<String, List<String>>();
 					listDataHeader = new ArrayList<String>();
 					List<String> assignmentContents;
@@ -114,15 +120,33 @@ public class CourseDetailFragment extends Fragment {
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 							String assignmentID = assignmentObjects.get(position);
 							Log.d("Object ID", courseID);
-							ParseObject.createWithoutData("Assignments", assignmentID).deleteInBackground(new DeleteCallback() {
-								
+							deleteIndex = position;
+							deleteWarning.show();
+							deleteWarning.setOnDismissListener(new OnDismissListener() {
 								@Override
-								public void done(ParseException e) {
-									if (e == null) {
-										getAssignments();
+								public void onDismiss(DialogInterface dialog) {
+									if (deleteWarning.proceed) {
+										assignmentsList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
+											
+											@Override
+											public void done(ParseException e) {
+												if (e == null) {
+													getAssignments();
+												}
+											}
+										});
 									}
 								}
 							});
+//							ParseObject.createWithoutData("Assignments", assignmentID).deleteInBackground(new DeleteCallback() {
+//								
+//								@Override
+//								public void done(ParseException e) {
+//									if (e == null) {
+//										getAssignments();
+//									}
+//								}
+//							});
 							return true;
 						}
 					});

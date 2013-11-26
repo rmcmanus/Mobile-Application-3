@@ -12,6 +12,8 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -38,13 +40,16 @@ import com.parse.ParseUser;
  * interface.
  */
 public class CourseListFragment extends ListFragment {
-	
+
 	public String[] courseArray;
-//	public ArrayList<Semester> courseArrayList;
+	//	public ArrayList<Semester> courseArrayList;
 	public ArrayList<Course> courseArrayList;
+	public List<ParseObject> coursesList;
 	public ListView courseListView;
 	public String semesterID;
 	public boolean noCourses = false;
+	public DeleteWarning deleteWarning;
+	public int deleteIndex;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -96,19 +101,20 @@ public class CourseListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		Toast.makeText(getActivity(), getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
-//		String[] courses = new String[] {"Course 1", "Course 2", "Course 3"};
-//		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, courses));
+		//		Toast.makeText(getActivity(), getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID), Toast.LENGTH_SHORT).show();
+		//		String[] courses = new String[] {"Course 1", "Course 2", "Course 3"};
+		//		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, courses));
 		semesterID = getActivity().getIntent().getStringExtra(SemesterActivity.EXTRA_SEMESTER_ID);
 		getList();
+		deleteWarning = new DeleteWarning(getActivity());
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		getList();
 	}
-	
+
 	public void getList() {
 		if (semesterID == null) {
 			semesterID = getActivity().getIntent().getStringExtra(CourseDetailActivity.EXTRA_SEMESTER_ID);
@@ -120,44 +126,63 @@ public class CourseListFragment extends ListFragment {
 			@Override
 			public void done(List<ParseObject> courseList, ParseException e) {
 				if (e == null) {
-		            Log.d("score", "Retrieved " + courseList.size() + " courses");
-		            courseArray = new String[courseList.size()];
-	            	courseArrayList = new ArrayList<Course>();
-		            String courseName, objectID;
-		            if (courseList.size() == 0) {
-		            	courseArray = new String[1];
-		            	courseArray[0] = getString(R.string.noCourse);
-		            	noCourses = true;
-		            }
-		            for (int i = 0; i < courseList.size(); ++i) {
-		            	courseName = courseList.get(i).getString("name");
-		            	objectID = courseList.get(i).getObjectId();
-		            	courseArrayList.add(new Course(courseName, objectID));
-		            	courseArray[i] = courseName;
-		            }
-		            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
-		    		setListAdapter(arrayAdapter);
-		    		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+					Log.d("score", "Retrieved " + courseList.size() + " courses");
+					courseArray = new String[courseList.size()];
+					courseArrayList = new ArrayList<Course>();
+					coursesList = courseList;
+					String courseName, objectID;
+					if (courseList.size() == 0) {
+						courseArray = new String[1];
+						courseArray[0] = getString(R.string.noCourse);
+						noCourses = true;
+					}
+					for (int i = 0; i < courseList.size(); ++i) {
+						courseName = courseList.get(i).getString("name");
+						objectID = courseList.get(i).getObjectId();
+						courseArrayList.add(new Course(courseName, objectID));
+						courseArray[i] = courseName;
+					}
+					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
+					setListAdapter(arrayAdapter);
+					getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 							String courseID = courseArrayList.get(position).objectID;
 							Log.d("Object ID", courseID);
-							ParseObject.createWithoutData("Course", courseID).deleteInBackground(new DeleteCallback() {
-								
+							deleteIndex = position;
+							deleteWarning.show();
+							deleteWarning.setOnDismissListener(new OnDismissListener() {
 								@Override
-								public void done(ParseException e) {
-									if (e == null) {
-										getList();
+								public void onDismiss(DialogInterface dialog) {
+									if (deleteWarning.proceed) {
+										coursesList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
+
+											@Override
+											public void done(ParseException e) {
+												if (e == null) {
+													getList();
+												}
+											}
+										});			
 									}
 								}
 							});
+							//							ParseObject.createWithoutData("Course", courseID).deleteInBackground(new DeleteCallback() {
+							//								
+							//								@Override
+							//								public void done(ParseException e) {
+							//									if (e == null) {
+							//										getList();
+							//									}
+							//								}
+							//							});
 							return true;
 						}
 					});
 				} else {
-		            Log.d("score", "Error: " + e.getMessage());
-		        }
+					Log.d("score", "Error: " + e.getMessage());
+				}
 			}
 		});	
 	}
