@@ -11,6 +11,8 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.Calendar;
 import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,7 @@ public class AddAssignmentActivity extends Activity {
 	String assignmentPriority, assignmentType;
 	String dateDue = "";
 	String courseID;
+	JSONObject categoryJSON;
 	public String categoryArray[];
 
 	@Override
@@ -61,18 +64,28 @@ public class AddAssignmentActivity extends Activity {
 		
 		//Queries the parse database for the Category column and grabs the categories based on
 		//the user's id and the course id
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("Category");
+		
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
-		query.whereEqualTo("course", courseID);
+		query.whereEqualTo("objectId", courseID);
 		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> categoryList, ParseException e) {
 				if (e == null) {
 		            Log.d("score", "Retrieved " + categoryList.size() + " categories");
-		            categoryArray = new String[categoryList.size()];
+		            //Retrieves data from the JSON stored on Parse
 		            for (int i = 0; i < categoryList.size(); ++i) {
-		            	categoryArray[i] = categoryList.get(i).getString("category_name");
+		            	categoryJSON = categoryList.get(i).getJSONObject("course_array");
 		            }
+		            try {
+		            	categoryJSON.getJSONArray("category_list");
+		            	categoryArray = new String[categoryJSON.getJSONArray("category_list").length()];
+						for (int i = 0; i < categoryArray.length; ++i) {
+							categoryArray[i] = (String) categoryJSON.getJSONArray("category_list").get(i);
+						}
+					} catch (JSONException e1) {
+						e1.printStackTrace();
+					}
 		            //Populates the spinner based on the results of the query
 		            ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_layout, categoryArray);
 		            Spinner typeSpinner = (Spinner) findViewById(R.id.assignmentTypeSpinner);

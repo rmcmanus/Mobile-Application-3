@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
@@ -109,11 +111,39 @@ public class CourseListFragment extends ListFragment {
 		getList();
 		deleteWarning = new DeleteWarning(getActivity());
 	}
-
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+		
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+		
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();
-		getList();
+		
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+
+	    //The values are read back in from shared preferences and stored into their correct variable
+		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
+	    getList();
+	    getList();
 	}
 
 	/**

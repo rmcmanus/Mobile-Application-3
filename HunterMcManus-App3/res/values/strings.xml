@@ -111,5 +111,6 @@
     <string name="changeEmailGuest">Guests can\'t change their email, logout and join our app</string>
     <string name="featureNotImplemented">This feature has not been implemented</string>
     <string name="userUpdated">Your email has been updated successfully</string>
+    <string name="semesterIDSharedPreference">0</string>
 
 </resources>

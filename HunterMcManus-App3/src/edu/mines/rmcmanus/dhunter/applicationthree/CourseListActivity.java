@@ -15,7 +15,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -73,6 +75,38 @@ CourseListFragment.Callbacks {
 		if (!mTwoPane) {
 			this.getWindow().setBackgroundDrawableResource(R.drawable.backtoschool);
 		}
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+		
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+		
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+	    //The values are read back in from shared preferences and stored into their correct variable
+	    semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
 	}
 
 	@Override

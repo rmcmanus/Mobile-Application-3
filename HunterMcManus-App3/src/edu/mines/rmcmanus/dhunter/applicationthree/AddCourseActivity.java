@@ -11,6 +11,11 @@
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
 import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -89,7 +94,7 @@ public class AddCourseActivity extends Activity {
 				Toast.makeText(this, getString(R.string.courseTypeError), Toast.LENGTH_SHORT).show();
 			}
 			else {
-				
+
 				//Inserts into the Course column based on the information the user entered
 				final ParseObject course = new ParseObject("Course");
 				course.put("name", courseName.getText().toString());
@@ -97,39 +102,37 @@ public class AddCourseActivity extends Activity {
 				course.put("time", time);
 				course.put("location", location);
 				course.put("user", ParseUser.getCurrentUser());
+				JSONObject myObject = new JSONObject();
+				JSONArray categoryList = new JSONArray();
+				for (int i = 0; i < myAdapter.getCount(); ++i) {
+					//Only grabs the information that isn't empty
+					if (!myAdapter.getText(i).equals("")) {
+						categoryList.put(myAdapter.getText(i));
+					}
+				}
+				try {
+					myObject.put("category_list", categoryList);
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				course.put("course_array", myObject);
 				course.saveInBackground(new SaveCallback() {
 
 					@Override
 					public void done(ParseException e) {
-						String courseID = course.getObjectId();
-						for (int i = 0; i < myAdapter.getCount(); ++i) {
-							//Only grabs the information that isn't empty
-							if (!myAdapter.getText(i).equals("")) {
-								//Inserts into the categories based on the categories
-								ParseObject category = new ParseObject("Category");
-								category.put("course", courseID);
-								category.put("category_name", myAdapter.getText(i));
-								category.put("user", ParseUser.getCurrentUser());
-//								if (i == (myAdapter.getCount() - 1)) {
-//									save = true;
-//								}
-								category.saveInBackground(new SaveCallback() {
-									@Override
-									public void done(ParseException e) {
-										//Finishes the activity once the information is saved
-//										if (save) {
-											finish();
-//										}
-									}
-								});
-							}
-						}
+						finish();
 					}
 				});
 			}
 		}
 	}
-	
+
+	public void checkIfDoneSaving() {
+		if (save) {
+			finish();
+		}
+	}
+
 	/**
 	 * This is a custom adapter that was found online and adapted. This adapter uses edit
 	 * text boxes for a list view instead of the normal text view.  This allows the code
