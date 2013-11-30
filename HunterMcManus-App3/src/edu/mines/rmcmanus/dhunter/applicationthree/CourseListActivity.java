@@ -23,6 +23,7 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * An activity representing a list of Courses. This activity has different
@@ -76,37 +77,37 @@ CourseListFragment.Callbacks {
 			this.getWindow().setBackgroundDrawableResource(R.drawable.backtoschool);
 		}
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		SharedPreferences.Editor editor = sharedPref.edit();
-		
+
 		//puts the home and away team names into shared preferences
 		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
 		editor.commit();
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		SharedPreferences.Editor editor = sharedPref.edit();
-		
+
 		//puts the home and away team names into shared preferences
 		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
 		editor.commit();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-	    //The values are read back in from shared preferences and stored into their correct variable
-	    semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
+		//The values are read back in from shared preferences and stored into their correct variable
+		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
 	}
 
 	@Override
@@ -134,9 +135,14 @@ CourseListFragment.Callbacks {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.addAssignmentContext:
-			Intent intent = new Intent(this, AddAssignmentActivity.class);
-			intent.putExtra(EXTRA_COURSE_ID, courseID);
-			startActivity(intent);
+			if (courseID == null || courseID.equals("-1")) {
+				Toast.makeText(this, getString(R.string.nullCourseError), Toast.LENGTH_SHORT).show();
+			} else {
+				Intent intent = new Intent(this, AddAssignmentActivity.class);
+				intent.putExtra(EXTRA_COURSE_ID, courseID);
+				intent.putExtra(EXTRA_SEMESTER_ID, semesterID);
+				startActivity(intent);
+			}
 			return true;
 		case R.id.addCourseContext:
 			Intent addCourse = new Intent(this, AddCourseActivity.class);
@@ -170,44 +176,68 @@ CourseListFragment.Callbacks {
 	 * 
 	 */
 	@Override
-	public void onItemSelected(String courseName, boolean hasCourses, String semesterID) {
+	public void onItemSelected(String courseName, boolean hasCourses, final String semesterID) {
 		this.semesterID = semesterID;
 		if (!hasCourses) {
+			if (courseName.equals(getString(R.string.allAssignments))) {
+				courseID = "-1";
+				if (mTwoPane) {
+					// In two-pane mode, show the detail view in this activity by
+					// adding or replacing the detail fragment using a
+					// fragment transaction.
+					Bundle arguments = new Bundle();
+					//							arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
+					arguments.putString(EXTRA_COURSE_ID, courseID);
+					arguments.putString(EXTRA_SEMESTER_ID, semesterID);
+					CourseDetailFragment fragment = new CourseDetailFragment();
+					fragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction()
+					.replace(R.id.course_detail_container, fragment).commit();
 
-			ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
-			query.whereEqualTo("semester", semesterID);
-			query.whereEqualTo("user", ParseUser.getCurrentUser());
-			query.whereEqualTo("name", courseName);
-			query.findInBackground(new FindCallback<ParseObject>() {
-				@Override
-				public void done(List<ParseObject> courseList, ParseException e) {
-					if (e == null) {
-						Log.d("score", "Retrieved " + courseList.size() + " courses");
-						for (int i = 0; i < courseList.size(); ++i) {
-							courseID = courseList.get(i).getObjectId();
-						}
-						if (mTwoPane) {
-							// In two-pane mode, show the detail view in this activity by
-							// adding or replacing the detail fragment using a
-							// fragment transaction.
-							Bundle arguments = new Bundle();
-//							arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
-							arguments.putString(EXTRA_COURSE_ID, courseID);
-							CourseDetailFragment fragment = new CourseDetailFragment();
-							fragment.setArguments(arguments);
-							getSupportFragmentManager().beginTransaction()
-							.replace(R.id.course_detail_container, fragment).commit();
-
-						} else {
-							// In single-pane mode, simply start the detail activity
-							// for the selected item ID.
-							startTheIntent();
-						}
-					} else {
-						Log.d("score", "Error: " + e.getMessage());
-					}
+				} else {
+					// In single-pane mode, simply start the detail activity
+					// for the selected item ID.
+					startTheIntent();
 				}
-			});	
+			}
+
+			else {
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("Course");
+				query.whereEqualTo("semester", semesterID);
+				query.whereEqualTo("user", ParseUser.getCurrentUser());
+				query.whereEqualTo("name", courseName);
+				query.findInBackground(new FindCallback<ParseObject>() {
+					@Override
+					public void done(List<ParseObject> courseList, ParseException e) {
+						if (e == null) {
+							Log.d("score", "Retrieved " + courseList.size() + " courses");
+							for (int i = 0; i < courseList.size(); ++i) {
+								courseID = courseList.get(i).getObjectId();
+							}
+							if (mTwoPane) {
+								// In two-pane mode, show the detail view in this activity by
+								// adding or replacing the detail fragment using a
+								// fragment transaction.
+								Bundle arguments = new Bundle();
+								//							arguments.putString(CourseDetailFragment.ARG_ITEM_ID, id);
+								arguments.putString(EXTRA_COURSE_ID, courseID);
+								arguments.putString(EXTRA_SEMESTER_ID, semesterID);
+								CourseDetailFragment fragment = new CourseDetailFragment();
+								fragment.setArguments(arguments);
+								getSupportFragmentManager().beginTransaction()
+								.replace(R.id.course_detail_container, fragment).commit();
+
+							} else {
+								// In single-pane mode, simply start the detail activity
+								// for the selected item ID.
+								startTheIntent();
+							}
+						} else {
+							Log.d("score", "Error: " + e.getMessage());
+						}
+					}
+				});	
+			}
 		}
 	}
 
@@ -215,7 +245,7 @@ CourseListFragment.Callbacks {
 		Intent detailIntent = new Intent(this, CourseDetailActivity.class);
 		detailIntent.putExtra(EXTRA_COURSE_ID, courseID);
 		detailIntent.putExtra(EXTRA_SEMESTER_ID, semesterID);
-//		detailIntent.putExtra(CourseDetailFragment.ARG_ITEM_ID, id);
+		//		detailIntent.putExtra(CourseDetailFragment.ARG_ITEM_ID, id);
 		startActivity(detailIntent);
 	}
 }

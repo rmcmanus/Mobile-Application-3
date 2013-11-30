@@ -45,7 +45,7 @@ import com.parse.ParseUser;
 public class CourseListFragment extends ListFragment {
 
 	public String[] courseArray;
-//	public ArrayList<Semester> courseArrayList;
+	//	public ArrayList<Semester> courseArrayList;
 	public ArrayList<Course> courseArrayList;
 	public List<ParseObject> coursesList;
 	public ListView courseListView;
@@ -111,39 +111,38 @@ public class CourseListFragment extends ListFragment {
 		getList();
 		deleteWarning = new DeleteWarning(getActivity());
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 		SharedPreferences.Editor editor = sharedPref.edit();
-		
+
 		//puts the home and away team names into shared preferences
 		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
 		editor.commit();
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 		SharedPreferences.Editor editor = sharedPref.edit();
-		
+
 		//puts the home and away team names into shared preferences
 		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
 		editor.commit();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
-	    //The values are read back in from shared preferences and stored into their correct variable
+		//The values are read back in from shared preferences and stored into their correct variable
 		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
-	    getList();
-	    getList();
+		getList();
 	}
 
 	/**
@@ -165,7 +164,7 @@ public class CourseListFragment extends ListFragment {
 			public void done(List<ParseObject> courseList, ParseException e) {
 				if (e == null) {
 					Log.d("score", "Retrieved " + courseList.size() + " courses");
-					courseArray = new String[courseList.size()];
+					courseArray = new String[courseList.size() + 1];
 					courseArrayList = new ArrayList<Course>();
 					coursesList = courseList;
 					String courseName, objectID;
@@ -175,11 +174,14 @@ public class CourseListFragment extends ListFragment {
 						courseArray[0] = getString(R.string.noCourse);
 						noCourses = true;
 					}
-					for (int i = 0; i < courseList.size(); ++i) {
-						courseName = courseList.get(i).getString("name");
-						objectID = courseList.get(i).getObjectId();
-						courseArrayList.add(new Course(courseName, objectID));
-						courseArray[i] = courseName;
+					if (courseList.size() > 0) {
+						courseArray[0] = getString(R.string.allAssignments);
+						for (int i = 1; i < courseList.size() + 1; ++i) {
+							courseName = courseList.get(i - 1).getString("name");
+							objectID = courseList.get(i - 1).getObjectId();
+							courseArrayList.add(new Course(courseName, objectID));
+							courseArray[i] = courseName;
+						}
 					}
 					//					getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list2, courseArray);
@@ -192,26 +194,29 @@ public class CourseListFragment extends ListFragment {
 
 							@Override
 							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-								String courseID = courseArrayList.get(position).objectID;
-								Log.d("Object ID", courseID);
-								deleteIndex = position;
-								deleteWarning.show();
-								deleteWarning.setOnDismissListener(new OnDismissListener() {
-									@Override
-									public void onDismiss(DialogInterface dialog) {
-										if (deleteWarning.proceed) {
-											coursesList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
+								if (position != 0) {
+									String courseID = courseArrayList.get(position).objectID;
+									Log.d("Object ID", courseID);
+									deleteIndex = position;
+									deleteWarning.show();
+									deleteWarning.setOnDismissListener(new OnDismissListener() {
+										@Override
+										public void onDismiss(DialogInterface dialog) {
+											if (deleteWarning.proceed) {
+												coursesList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
 
-												@Override
-												public void done(ParseException e) {
-													if (e == null) {
-														getList();
+													@Override
+													public void done(ParseException e) {
+														if (e == null) {
+															getList();
+														}
 													}
-												}
-											});			
+												});			
+											}
 										}
-									}
-								});
+
+									});
+								}
 								//							ParseObject.createWithoutData("Course", courseID).deleteInBackground(new DeleteCallback() {
 								//								
 								//								@Override
@@ -296,9 +301,11 @@ public class CourseListFragment extends ListFragment {
 	public void setActivateOnItemClick(boolean activateOnItemClick) {
 		// When setting CHOICE_MODE_SINGLE, ListView will automatically
 		// give items the 'activated' state when touched.
+//		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		getListView().setChoiceMode(
-				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
-						: ListView.CHOICE_MODE_NONE);
+                activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
+                                : ListView.CHOICE_MODE_NONE);
+		getListView().setSelector(android.R.color.black);
 	}
 
 	private void setActivatedPosition(int position) {

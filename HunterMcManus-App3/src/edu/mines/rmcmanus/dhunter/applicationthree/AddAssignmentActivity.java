@@ -35,6 +35,7 @@ public class AddAssignmentActivity extends Activity {
 	String assignmentPriority, assignmentType;
 	String dateDue = "";
 	String courseID;
+	String semesterID;
 	JSONObject categoryJSON;
 	public String categoryArray[];
 
@@ -44,8 +45,12 @@ public class AddAssignmentActivity extends Activity {
 		
 		//Gets the course ID depending on which intent it came from
 		courseID = getIntent().getStringExtra(CourseDetailActivity.EXTRA_COURSE_ID);
+		semesterID = getIntent().getStringExtra(CourseDetailActivity.EXTRA_SEMESTER_ID);
 		if (courseID == null) {
 			courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
+		}
+		if (semesterID == null) {
+			semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
 		}
 		
 		setContentView(R.layout.activity_add_assignment);
@@ -156,6 +161,7 @@ public class AddAssignmentActivity extends Activity {
 				newAssignment.put("assignmentType", assignmentType);
 				newAssignment.put("dateDue", dateDue);
 				newAssignment.put("course", courseID);
+				newAssignment.put("semester", semesterID);
 				//Finishes the activity once the information has been saved
 				newAssignment.saveInBackground(new SaveCallback() {
 					@Override

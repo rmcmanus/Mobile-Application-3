@@ -112,5 +112,8 @@
     <string name="featureNotImplemented">This feature has not been implemented</string>
     <string name="userUpdated">Your email has been updated successfully</string>
     <string name="semesterIDSharedPreference">0</string>
+    <string name="nullCourseError">You must select a course</string>
+    <string name="allAssignments">All Assignments</string>
+    <string name="courseIDSharedPreference">1</string>
 
 </resources>

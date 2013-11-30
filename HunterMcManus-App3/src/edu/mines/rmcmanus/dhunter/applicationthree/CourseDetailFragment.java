@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +44,7 @@ public class CourseDetailFragment extends Fragment {
 	public HashMap<String, List<String>> listDataChild;
 	public ArrayList<String> assignmentObjects;
 	public String courseID;
+	public String semesterID;
 	public ArrayList<String> assignmentList;
 	public List<ParseObject> assignmentsList;
 	public DeleteWarning deleteWarning;
@@ -64,6 +67,7 @@ public class CourseDetailFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		courseID = getArguments().getString(CourseListActivity.EXTRA_COURSE_ID);
+		semesterID = getArguments().getString(CourseListActivity.EXTRA_SEMESTER_ID);
 		deleteWarning = new DeleteWarning(getActivity());
 	}
 
@@ -76,10 +80,39 @@ public class CourseDetailFragment extends Fragment {
 
 		return rootView;
 	}
+	
+//	@Override
+//	public void onPause() {
+//		super.onPause();
+//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+//		SharedPreferences.Editor editor = sharedPref.edit();
+//
+//		//puts the home and away team names into shared preferences
+//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+//		editor.commit();
+//	}
+
+//	@Override
+//	public void onStop() {
+//		super.onStop();
+//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+//		SharedPreferences.Editor editor = sharedPref.edit();
+//
+//		//puts the home and away team names into shared preferences
+//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+//		editor.commit();
+//	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+//		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+//
+//		//The values are read back in from shared preferences and stored into their correct variable
+//		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
+//		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "0");	    
 		getAssignments();
 	}
 
@@ -91,7 +124,10 @@ public class CourseDetailFragment extends Fragment {
 	 */
 	public void getAssignments() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignments");
-		query.whereEqualTo("course", courseID);
+		if (!courseID.equals("-1")) {
+			query.whereEqualTo("course", courseID);
+		}
+		query.whereEqualTo("semester", semesterID);
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.orderByAscending("dateDue");
 		query.findInBackground(new FindCallback<ParseObject>() {

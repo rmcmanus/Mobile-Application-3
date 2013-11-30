@@ -27,6 +27,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
@@ -37,13 +38,15 @@ public class AddCourseActivity extends Activity {
 	public String semesterID;
 	private ListView myList;
 	private MyAdapter myAdapter;
+	public LinearLayout pbl;
 	public boolean save = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_course);
-
+//		pbl = (LinearLayout) findViewById(R.id.progressView);
+//		pbl.setVisibility(View.INVISIBLE);
 		semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
 		myList = (ListView) findViewById(R.id.MyList);
 		myList.setItemsCanFocus(true);
@@ -72,6 +75,7 @@ public class AddCourseActivity extends Activity {
 	 * @param v The view clicked on the activity
 	 */
 	public void addCourse(View v) {
+//		pbl.setVisibility(View.VISIBLE);
 		EditText courseName = (EditText) findViewById(R.id.addCourseName);
 		String location;
 		String time;
@@ -120,6 +124,7 @@ public class AddCourseActivity extends Activity {
 
 					@Override
 					public void done(ParseException e) {
+//						pbl.setVisibility(View.INVISIBLE);
 						finish();
 					}
 				});
