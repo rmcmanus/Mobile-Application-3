@@ -47,6 +47,7 @@ public class SemesterActivity extends Activity {
 	public ListView semesterListView;
 	public String semesterID;
 	public final static String EXTRA_SEMESTER_ID = "edu.mines.rmcmanus.dhunter.applicationthree.SEMESTERID";
+	public final static String EXTRA_LOGIN = "edu.mines.rmcmanus.dhunter.applicationthree.LOGIN";
 	public DeleteWarning deleteWarning;
 	public int deleteIndex;
 	
@@ -58,7 +59,12 @@ public class SemesterActivity extends Activity {
 		setupActionBar();
 
 		//Gets weather the user signed in as a guest or not
-		isGuest = getIntent().getBooleanExtra(MainActivity.EXTRA_GUEST, false);
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			if (extras.containsKey(MainActivity.EXTRA_GUEST)) {
+				isGuest = extras.getBoolean(MainActivity.EXTRA_GUEST, false);
+			}
+		}
 
 		intent = new Intent(this, CourseListActivity.class);
 		getList();
@@ -236,10 +242,17 @@ public class SemesterActivity extends Activity {
 		case R.id.action_user:
 			if (!isGuest) {
 				ParseUser.logOut();
+				Intent logout = new Intent(this, MainActivity.class);
+				startActivity(logout);
+				finish();
+			}
+			else {
 				Intent login = new Intent(this, MainActivity.class);
+				login.putExtra(EXTRA_LOGIN, true);
+				Log.d("Guest Login", "Logging in");
 				startActivity(login);
 				finish();
-			}						
+			}
 			return true;
 		}
 

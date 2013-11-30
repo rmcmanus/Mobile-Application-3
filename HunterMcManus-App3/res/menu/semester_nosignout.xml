@@ -15,5 +15,10 @@
     <item 
         android:id="@+id/about" 
         android:title="@string/about"></item>
+    
+    <item
+        android:id="@+id/action_user"
+        android:title="@string/action_user_signup"
+        android:showAsAction="ifRoom" />
       
 </menu>
