@@ -152,6 +152,7 @@ public class CourseListFragment extends ListFragment {
 	 * 
 	 */
 	public void getList() {
+		noCourses = false;
 		if (semesterID == null) {
 			semesterID = getActivity().getIntent().getStringExtra(CourseDetailActivity.EXTRA_SEMESTER_ID);
 		}
@@ -176,6 +177,7 @@ public class CourseListFragment extends ListFragment {
 					}
 					if (courseList.size() > 0) {
 						courseArray[0] = getString(R.string.allAssignments);
+						courseArrayList.add(new Course("", ""));
 						for (int i = 1; i < courseList.size() + 1; ++i) {
 							courseName = courseList.get(i - 1).getString("name");
 							objectID = courseList.get(i - 1).getObjectId();
@@ -203,7 +205,7 @@ public class CourseListFragment extends ListFragment {
 										@Override
 										public void onDismiss(DialogInterface dialog) {
 											if (deleteWarning.proceed) {
-												coursesList.get(deleteIndex).deleteInBackground(new DeleteCallback() {
+												coursesList.get(deleteIndex - 1).deleteInBackground(new DeleteCallback() {
 
 													@Override
 													public void done(ParseException e) {

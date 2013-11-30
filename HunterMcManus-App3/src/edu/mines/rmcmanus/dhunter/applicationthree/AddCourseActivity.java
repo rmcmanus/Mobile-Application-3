@@ -21,6 +21,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -33,6 +34,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 public class AddCourseActivity extends Activity {
 
@@ -53,7 +55,44 @@ public class AddCourseActivity extends Activity {
 		myList.setItemsCanFocus(true);
 		myAdapter = new MyAdapter();
 		myList.setAdapter(myAdapter);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
 
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+		//The values are read back in from shared preferences and stored into their correct variable
+		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
 	}
 
 	/**

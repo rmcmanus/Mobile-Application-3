@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +68,13 @@ public class CourseDetailFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		courseID = getArguments().getString(CourseListActivity.EXTRA_COURSE_ID);
 		semesterID = getArguments().getString(CourseListActivity.EXTRA_SEMESTER_ID);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.commit();
 		deleteWarning = new DeleteWarning(getActivity());
 	}
 
@@ -79,38 +88,38 @@ public class CourseDetailFragment extends Fragment {
 		return rootView;
 	}
 	
-//	@Override
-//	public void onPause() {
-//		super.onPause();
-//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-//		SharedPreferences.Editor editor = sharedPref.edit();
-//
-//		//puts the home and away team names into shared preferences
-//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
-//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
-//		editor.commit();
-//	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
 
-//	@Override
-//	public void onStop() {
-//		super.onStop();
-//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-//		SharedPreferences.Editor editor = sharedPref.edit();
-//
-//		//puts the home and away team names into shared preferences
-//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
-//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
-//		editor.commit();
-//	}
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.commit();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
+	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-//		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-//
-//		//The values are read back in from shared preferences and stored into their correct variable
-//		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
-//		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "0");	    
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+
+		//The values are read back in from shared preferences and stored into their correct variable
+		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
+		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "0");	    
 		getAssignments();
 	}
 

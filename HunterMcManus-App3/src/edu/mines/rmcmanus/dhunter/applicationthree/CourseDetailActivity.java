@@ -10,7 +10,9 @@ package edu.mines.rmcmanus.dhunter.applicationthree;
 import com.parse.ParseUser;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -56,6 +58,13 @@ public class CourseDetailActivity extends FragmentActivity {
 			arguments.putString(CourseListActivity.EXTRA_SEMESTER_ID, getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID));
 			courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
 			semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = sharedPref.edit();
+	
+			//puts the home and away team names into shared preferences
+			editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+			editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+			editor.commit();
 			CourseDetailFragment fragment = new CourseDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
@@ -63,43 +72,50 @@ public class CourseDetailActivity extends FragmentActivity {
 
 		courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
 		semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the home and away team names into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.commit();
 
 	}
 
-	//	@Override
-	//	public void onPause() {
-	//		super.onPause();
-	//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	//		SharedPreferences.Editor editor = sharedPref.edit();
-	//
-	//		//puts the home and away team names into shared preferences
-	//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
-	//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
-	//		editor.commit();
-	//	}
+		@Override
+		public void onPause() {
+			super.onPause();
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = sharedPref.edit();
+	
+			//puts the semester and course ids into shared preferences
+			editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+			editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+			editor.commit();
+		}
 
-	//	@Override
-	//	public void onStop() {
-	//		super.onStop();
-	//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	//		SharedPreferences.Editor editor = sharedPref.edit();
-	//
-	//		//puts the home and away team names into shared preferences
-	//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
-	//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
-	//		editor.commit();
-	//	}
+		@Override
+		public void onStop() {
+			super.onStop();
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = sharedPref.edit();
+	
+			//puts the semester and course ids into shared preferences
+			editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+			editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+			editor.commit();
+		}
 
-	//	@Override
-	//	protected void onResume() {
-	//		super.onResume();
-	//
-	//		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	//
-	//		//The values are read back in from shared preferences and stored into their correct variable
-	//		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
-	//		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "1");
-	//	}
+		@Override
+		protected void onResume() {
+			super.onResume();
+	
+			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	
+			//The values are read back in from shared preferences and stored into their correct variable
+			semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
+			courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "1");
+		}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

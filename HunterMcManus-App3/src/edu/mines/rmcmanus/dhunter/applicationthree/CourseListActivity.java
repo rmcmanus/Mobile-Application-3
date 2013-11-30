@@ -76,6 +76,12 @@ CourseListFragment.Callbacks {
 		if (!mTwoPane) {
 			this.getWindow().setBackgroundDrawableResource(R.drawable.backtoschool);
 		}
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.commit();
 	}
 
 	@Override
@@ -84,7 +90,7 @@ CourseListFragment.Callbacks {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		SharedPreferences.Editor editor = sharedPref.edit();
 
-		//puts the home and away team names into shared preferences
+		//puts the semester and course ids into shared preferences
 		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
 		editor.commit();
 	}
@@ -95,7 +101,7 @@ CourseListFragment.Callbacks {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		SharedPreferences.Editor editor = sharedPref.edit();
 
-		//puts the home and away team names into shared preferences
+		//puts the semester and course ids into shared preferences
 		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
 		editor.commit();
 	}

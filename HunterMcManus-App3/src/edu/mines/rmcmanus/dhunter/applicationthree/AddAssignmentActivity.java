@@ -14,7 +14,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,6 +66,14 @@ public class AddAssignmentActivity extends Activity {
 		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.priorityArray, R.layout.spinner_layout);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		prioritySpinner.setAdapter(arrayAdapter);
+		
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.commit();
 		
 		//Populate the spinner with assignment types that were set when the course was added
 		
@@ -132,6 +142,41 @@ public class AddAssignmentActivity extends Activity {
 				dateDue = (month + 1) + "/" + dayOfMonth + "/" + year;
 			}
 		});
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.commit();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		//puts the semester and course ids into shared preferences
+		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+		editor.commit();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+		//The values are read back in from shared preferences and stored into their correct variable
+		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");	    
+		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "0");
 	}
 	
 	/**
