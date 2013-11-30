@@ -20,4 +20,10 @@
         android:id="@+id/about" 
         android:title="@string/about"></item>
     
+    <item
+        android:id="@+id/action_user"
+        android:icon="@drawable/door"
+        android:title="@string/action_user"
+        android:showAsAction="ifRoom" />
+    
 </menu>

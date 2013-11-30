@@ -7,10 +7,10 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import com.parse.ParseUser;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -25,11 +25,11 @@ import android.view.MenuItem;
  * a {@link CourseDetailFragment}.
  */
 public class CourseDetailActivity extends FragmentActivity {
-	
+
 	public final static String EXTRA_COURSE_ID = "edu.mines.rmcmanus.dhunter.applicationthree.COURSEADDID";
 	public final static String EXTRA_SEMESTER_ID = "edu.mines.rmcmanus.dhunter.applicationthree.RESUMESEMESTERID";
 	public String courseID, semesterID;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,7 +51,7 @@ public class CourseDetailActivity extends FragmentActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-//			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(CourseDetailFragment.ARG_ITEM_ID));
+			//			arguments.putString(CourseDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(CourseDetailFragment.ARG_ITEM_ID));
 			arguments.putString(CourseListActivity.EXTRA_COURSE_ID, getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID));
 			arguments.putString(CourseListActivity.EXTRA_SEMESTER_ID, getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID));
 			courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
@@ -60,47 +60,47 @@ public class CourseDetailActivity extends FragmentActivity {
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.course_detail_container, fragment).commit();
 		}
-		
+
 		courseID = getIntent().getStringExtra(CourseListActivity.EXTRA_COURSE_ID);
 		semesterID = getIntent().getStringExtra(CourseListActivity.EXTRA_SEMESTER_ID);
-		
+
 	}
-	
-//	@Override
-//	public void onPause() {
-//		super.onPause();
-//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//		SharedPreferences.Editor editor = sharedPref.edit();
-//
-//		//puts the home and away team names into shared preferences
-//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
-//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
-//		editor.commit();
-//	}
 
-//	@Override
-//	public void onStop() {
-//		super.onStop();
-//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//		SharedPreferences.Editor editor = sharedPref.edit();
-//
-//		//puts the home and away team names into shared preferences
-//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
-//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
-//		editor.commit();
-//	}
+	//	@Override
+	//	public void onPause() {
+	//		super.onPause();
+	//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	//		SharedPreferences.Editor editor = sharedPref.edit();
+	//
+	//		//puts the home and away team names into shared preferences
+	//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+	//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+	//		editor.commit();
+	//	}
 
-//	@Override
-//	protected void onResume() {
-//		super.onResume();
-//
-//		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//
-//		//The values are read back in from shared preferences and stored into their correct variable
-//		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
-//		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "1");
-//	}
-	
+	//	@Override
+	//	public void onStop() {
+	//		super.onStop();
+	//		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	//		SharedPreferences.Editor editor = sharedPref.edit();
+	//
+	//		//puts the home and away team names into shared preferences
+	//		editor.putString(getString(R.string.semesterIDSharedPreference), semesterID);
+	//		editor.putString(getString(R.string.courseIDSharedPreference), courseID);
+	//		editor.commit();
+	//	}
+
+	//	@Override
+	//	protected void onResume() {
+	//		super.onResume();
+	//
+	//		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	//
+	//		//The values are read back in from shared preferences and stored into their correct variable
+	//		semesterID = sharedPrefs.getString(getString(R.string.semesterIDSharedPreference), "0");
+	//		courseID = sharedPrefs.getString(getString(R.string.courseIDSharedPreference), "1");
+	//	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -142,6 +142,12 @@ public class CourseDetailActivity extends FragmentActivity {
 		case R.id.help:
 			Intent help = new Intent(this, HelpActivity.class);
 			startActivity(help);
+			return true;
+		case R.id.action_user:
+			ParseUser.logOut();
+			Intent login = new Intent(this, MainActivity.class);
+			startActivity(login);
+			finish();				
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

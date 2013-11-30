@@ -161,6 +161,12 @@ CourseListFragment.Callbacks {
 			Intent help = new Intent(this, HelpActivity.class);
 			startActivity(help);
 			return true;
+		case R.id.action_user:
+			ParseUser.logOut();
+			Intent login = new Intent(this, MainActivity.class);
+			startActivity(login);
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

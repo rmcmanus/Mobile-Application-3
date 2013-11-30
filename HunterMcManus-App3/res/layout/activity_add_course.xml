@@ -2,27 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backtoschool"
     android:baselineAligned="false"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/backtoschool"
     tools:context=".AddAssignmentActivity" >
-    
-<!--      <LinearLayout -->
-<!--         android:id="@+id/progressView" -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="fill_parent" > -->
-
-<!--         <ProgressBar -->
-<!--             android:id="@+id/progress" -->
-<!--             style="@android:style/Widget.ProgressBar.Small" -->
-<!--             android:layout_width="fill_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_gravity="center" -->
-<!--             android:layout_marginRight="5dp" /> -->
-<!--     </LinearLayout> -->
 
     <LinearLayout
         android:id="@+id/center"
@@ -41,32 +27,32 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:textColor="#FFFFFF"
-                android:text="@string/name" />
+                android:text="@string/name"
+                android:textColor="#FFFFFF" />
 
             <EditText
                 android:id="@+id/addCourseName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background="#FFFFFF"
                 android:layout_weight=".5"
+                android:background="#FFFFFF"
                 android:hint="" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingTop="5dp" >
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:textColor="#FFFFFF"
-                android:text="@string/time" />
+                android:text="@string/time"
+                android:textColor="#FFFFFF" />
 
             <EditText
                 android:id="@+id/courseTime"
@@ -81,17 +67,17 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:orientation="horizontal"
             android:paddingBottom="5dp"
-            android:orientation="horizontal" >
+            android:paddingTop="5dp" >
 
             <TextView
                 android:id="@+id/locationLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:textColor="#FFFFFF"
-                android:text="@string/location" />
+                android:text="@string/location"
+                android:textColor="#FFFFFF" />
 
             <EditText
                 android:id="@+id/courseLocation"
@@ -104,7 +90,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/guestbutton"
+            android:id="@+id/addCourseSubmitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
@@ -118,12 +104,26 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/assignmentCategory4"
+                android:id="@+id/addMoreCategoriesButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:text="@string/addmore" 
-                android:onClick="addAnotherView"/>
+                android:onClick="addAnotherView"
+                android:text="@string/addmore" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progressView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp" />
         </LinearLayout>
     </LinearLayout>
 
