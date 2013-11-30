@@ -26,6 +26,8 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,9 +37,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -50,7 +54,7 @@ public class MainActivity extends FragmentActivity {
 	boolean proceed = false;
 	public final static String EXTRA_GUEST = "edu.mines.rmcmanus.dhunter.app3.GUEST";
 	public boolean isGuest = false;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,14 +79,15 @@ public class MainActivity extends FragmentActivity {
 		// Check to see if a user is currently logged in
 		// If true, moves directly to the semester activity
 		ParseUser currentUser = ParseUser.getCurrentUser();
-		if (currentUser != null) {
-			ParseUser.getCurrentUser().increment("RunCount");
+		Log.d("Intent", ""+getIntent().getBooleanExtra(SemesterActivity.EXTRA_LOGIN, false));
+		if (currentUser != null && !getIntent().getBooleanExtra(SemesterActivity.EXTRA_LOGIN, false)) {
+			if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+				isGuest = true;
+			}
 			startSemesterIntent();
 		}
-
-//		ParseUser.enableAutomaticUser();
-//		ParseUser.getCurrentUser().increment("RunCount");
-//		ParseUser.getCurrentUser().saveInBackground();
+		ParseUser.enableAutomaticUser();
+		ParseUser.getCurrentUser().saveInBackground();
 	}
 
 	/**
@@ -127,7 +132,7 @@ public class MainActivity extends FragmentActivity {
 		// Creates an automatic user in Parse if not logged in. Once logged in, data is saved
 		// to that new or existing user
 		Toast.makeText(this, getString(R.string.featureNotImplemented), Toast.LENGTH_SHORT).show();
-		//showWarningDialog();
+		showWarningDialog();
 	}
 
 	/**
@@ -198,21 +203,21 @@ public class MainActivity extends FragmentActivity {
 	 * is shown to tell the user that there information won't be saved if they delete
 	 * the application 
 	 */
-//	private void showWarningDialog() {
-//		final Warning warningDialog = new Warning(this);
-//		warningDialog.show();
-//		warningDialog.setOnDismissListener(new OnDismissListener() {
-//
-//			@Override
-//			public void onDismiss(DialogInterface dialog) {
-//				if (warningDialog.proceed) {
-//					isGuest = true;
-//					startSemesterIntent();
-//				}
-//			}
-//
-//		});
-//	}
+	private void showWarningDialog() {
+		final Warning warningDialog = new Warning(this);
+		warningDialog.show();
+		warningDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if (warningDialog.proceed) {
+					isGuest = true;
+					startSemesterIntent();
+				}
+			}
+
+		});
+	}
 
 	/**
 	 * This function is called when the user has finished either logging in or signing up
