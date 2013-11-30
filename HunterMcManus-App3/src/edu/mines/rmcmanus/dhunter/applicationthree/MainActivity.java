@@ -81,13 +81,13 @@ public class MainActivity extends FragmentActivity {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		Log.d("Intent", ""+getIntent().getBooleanExtra(SemesterActivity.EXTRA_LOGIN, false));
 		if (currentUser != null && !getIntent().getBooleanExtra(SemesterActivity.EXTRA_LOGIN, false)) {
-			if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
-				isGuest = true;
-			}
+//			if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+//				isGuest = true;
+//			}
 			startSemesterIntent();
 		}
-		ParseUser.enableAutomaticUser();
-		ParseUser.getCurrentUser().saveInBackground();
+//		ParseUser.enableAutomaticUser();
+//		ParseUser.getCurrentUser().saveInBackground();
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class MainActivity extends FragmentActivity {
 		// Creates an automatic user in Parse if not logged in. Once logged in, data is saved
 		// to that new or existing user
 		Toast.makeText(this, getString(R.string.featureNotImplemented), Toast.LENGTH_SHORT).show();
-		showWarningDialog();
+//		showWarningDialog();
 	}
 
 	/**
