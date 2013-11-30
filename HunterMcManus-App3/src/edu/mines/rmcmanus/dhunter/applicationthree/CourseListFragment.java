@@ -49,7 +49,7 @@ public class CourseListFragment extends ListFragment {
 	public ArrayList<Course> courseArrayList;
 	public List<ParseObject> coursesList;
 	public ListView courseListView;
-	public String semesterID;
+	public String semesterID, courseID;
 	public boolean noCourses = false;
 	public DeleteWarning deleteWarning;
 	public int deleteIndex;
@@ -197,7 +197,7 @@ public class CourseListFragment extends ListFragment {
 							@Override
 							public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 								if (position != 0) {
-									String courseID = courseArrayList.get(position).objectID;
+									courseID = courseArrayList.get(position).objectID;
 									Log.d("Object ID", courseID);
 									deleteIndex = position;
 									deleteWarning.show();
@@ -210,6 +210,22 @@ public class CourseListFragment extends ListFragment {
 													@Override
 													public void done(ParseException e) {
 														if (e == null) {
+															ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignments");
+															query.whereEqualTo("course", courseID);
+															query.whereEqualTo("user", ParseUser.getCurrentUser());
+															query.findInBackground(new FindCallback<ParseObject>() {
+
+																@Override
+																public void done(
+																		List<ParseObject> objects,
+																		ParseException e) {
+																	for (int i = 0; i < objects.size(); ++i) {
+																		objects.get(i).deleteInBackground();
+																	}
+																	
+																}
+																
+															});
 															getList();
 														}
 													}

@@ -26,8 +26,6 @@
 
 package edu.mines.rmcmanus.dhunter.applicationthree;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -37,11 +35,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -203,21 +199,21 @@ public class MainActivity extends FragmentActivity {
 	 * is shown to tell the user that there information won't be saved if they delete
 	 * the application 
 	 */
-	private void showWarningDialog() {
-		final Warning warningDialog = new Warning(this);
-		warningDialog.show();
-		warningDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				if (warningDialog.proceed) {
-					isGuest = true;
-					startSemesterIntent();
-				}
-			}
-
-		});
-	}
+//	private void showWarningDialog() {
+//		final Warning warningDialog = new Warning(this);
+//		warningDialog.show();
+//		warningDialog.setOnDismissListener(new OnDismissListener() {
+//
+//			@Override
+//			public void onDismiss(DialogInterface dialog) {
+//				if (warningDialog.proceed) {
+//					isGuest = true;
+//					startSemesterIntent();
+//				}
+//			}
+//
+//		});
+//	}
 
 	/**
 	 * This function is called when the user has finished either logging in or signing up
